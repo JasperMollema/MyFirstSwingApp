@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
-    private JTextArea textArea;
+    private TextPanel textPanel;
     private JButton button;
 
     public MainFrame() {
@@ -10,14 +10,14 @@ public class MainFrame extends JFrame {
 
         setLayout(new BorderLayout());
 
-        textArea = new JTextArea();
+        textPanel = new TextPanel();
         button = new JButton("click me");
 
         button.addActionListener(
-                event -> textArea.append("Hello\n")
+                event -> textPanel.appendText("Hello\n")
                 );
 
-        add(textArea, BorderLayout.CENTER);
+        add(textPanel, BorderLayout.CENTER);
         add(button, BorderLayout.SOUTH);
 
         setSize(500, 400);
