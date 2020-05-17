@@ -7,6 +7,9 @@ public class FormPanel extends JPanel {
     private JTextField occupationField;
     private JList<AgeCategory> ageList;
     private JComboBox maritalStatusBox;
+    private JCheckBox clubMemberCheck;
+    private JLabel memberIdLabel;
+    private JTextField memberIdField;
     private JButton submit;
 
     private FormListener formListener;
@@ -18,10 +21,10 @@ public class FormPanel extends JPanel {
 
         nameField = new JTextField(10);
         occupationField = new JTextField(10);
-        ageList = new JList();
-        maritalStatusBox = new JComboBox<String>();
 
         // Set up list box.
+        ageList = new JList();
+
         DefaultListModel ageModel = new DefaultListModel();
         ageModel.addElement(new AgeCategory(0,"under 18"));
         ageModel.addElement(new AgeCategory(1,"18 to 65"));
@@ -33,6 +36,8 @@ public class FormPanel extends JPanel {
         ageList.setSelectedIndex(1);
 
         // Set up combo box.
+        maritalStatusBox = new JComboBox<String>();
+
         DefaultComboBoxModel maritalStatusModel = new DefaultComboBoxModel();
         maritalStatusModel.addElement("single");
         maritalStatusModel.addElement("married");
@@ -43,7 +48,22 @@ public class FormPanel extends JPanel {
         maritalStatusBox.setModel(maritalStatusModel);
         maritalStatusBox.setSelectedIndex(0);
 
+        // Set up club member.
+        clubMemberCheck = new JCheckBox();
+        memberIdLabel = new JLabel("Member ID:");
+        memberIdField = new JTextField(10);
 
+        memberIdLabel.setEnabled(false);
+        memberIdField.setEnabled(false);
+
+        clubMemberCheck.addActionListener(
+                event -> {
+                    memberIdLabel.setEnabled(clubMemberCheck.isSelected());
+                    memberIdField.setEnabled(clubMemberCheck.isSelected());
+                }
+        );
+
+        // Set up submit button.
         submit = new JButton("Submit");
 
         submit.addActionListener(
@@ -55,7 +75,9 @@ public class FormPanel extends JPanel {
                                         nameField.getText(),
                                         occupationField.getText(),
                                         ageList.getSelectedValue().getId(),
-                                        (String) maritalStatusBox.getSelectedItem()
+                                        (String) maritalStatusBox.getSelectedItem(),
+                                        clubMemberCheck.isSelected(),
+                                        memberIdField.getText()
                         )
                 );
             }
@@ -144,7 +166,41 @@ public class FormPanel extends JPanel {
         gridBagConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
         add(maritalStatusBox, gridBagConstraints);
 
-        /////////////// Fourth Row //////////////////////////////////
+        /////////////// Fifth Row //////////////////////////////////
+        gridBagConstraints.gridy++;
+
+        gridBagConstraints.weightx = 1;
+        gridBagConstraints.weighty = 0.1;
+
+        // Club member label.
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
+        gridBagConstraints.insets = new Insets(0,0,0,5);
+        add(new JLabel("Club member:"), gridBagConstraints);
+
+        // Club member check box.
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
+        add(clubMemberCheck, gridBagConstraints);
+
+        /////////////// Sixth Row //////////////////////////////////
+        gridBagConstraints.gridy++;
+
+        gridBagConstraints.weightx = 1;
+        gridBagConstraints.weighty = 0.1;
+
+        // Member id label.
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
+        gridBagConstraints.insets = new Insets(0,0,0,5);
+        add(memberIdLabel, gridBagConstraints);
+
+        // Member id value.
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
+        add(memberIdField, gridBagConstraints);
+
+        /////////////// Seventh Row //////////////////////////////////
         gridBagConstraints.gridy++;
 
         gridBagConstraints.weightx = 1;

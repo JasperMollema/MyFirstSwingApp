@@ -18,12 +18,18 @@ public class MainFrame extends JFrame {
         toolbar.setStringListener(text -> textPanel.appendText(text));
 
         formPanel.setFormListener(formEvent -> {
-            String name = "Name: = " + formEvent.getName();
-            String occupation = "Occupation: = " + formEvent.getOccupation();
-            String ageCategory = "Age category: = " + formEvent.getAgeCategory();
+            String name = "Name: " + formEvent.getName();
+            String occupation = "Occupation: " + formEvent.getOccupation();
+            String ageCategory = "Age category: " + formEvent.getAgeCategory();
             String maritalStatus = "Marital status:" + formEvent.getMaritalStatus();
 
-            textPanel.appendText(name + "\n" + occupation + "\n" + ageCategory + "\n" + maritalStatus + "\n");
+            textPanel.appendText(
+                    name + "\n"
+                            + occupation + "\n"
+                            + ageCategory + "\n"
+                            + maritalStatus + "\n"
+                            + getIsClubMemberString(formEvent)
+            );
         });
 
         add(formPanel, BorderLayout.WEST);
@@ -33,5 +39,16 @@ public class MainFrame extends JFrame {
         setSize(500, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+    }
+
+    private String getIsClubMemberString(FormEvent formEvent) {
+        String isClubMemberValue = formEvent.isClubMember() ? "Yes" : "No";
+        String isClubMember = "Club member: " + isClubMemberValue + "\n";
+
+        if (formEvent.isClubMember()) {
+            isClubMember += "Member id: " + formEvent.getMemberID() + "\n";
+        }
+
+        return isClubMember;
     }
 }
