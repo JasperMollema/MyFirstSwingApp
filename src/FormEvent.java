@@ -4,13 +4,15 @@ public class FormEvent extends EventObject {
     private String name;
     private String occupation;
     private int ageCategory;
+    private String maritalStatus;
 
-    public FormEvent(Object source, String name, String occupation,
-                     int ageCategory) {
-        super(source);
+    public FormEvent(FormPanel formPanel, String name, String occupation,
+                     int ageCategory, String maritalStatus) {
+        super(formPanel);
         this.name = name;
         this.occupation = occupation;
         this.ageCategory = ageCategory;
+        this.maritalStatus = maritalStatus;
     }
 
     public String getName() {
@@ -23,5 +25,9 @@ public class FormEvent extends EventObject {
 
     public int getAgeCategory() {
         return ageCategory;
+    }
+
+    public String getMaritalStatus() {
+        return maritalStatus;
     }
 }

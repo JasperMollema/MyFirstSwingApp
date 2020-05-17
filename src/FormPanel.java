@@ -3,12 +3,11 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 public class FormPanel extends JPanel {
-    private JLabel nameLabel;
-    private JLabel occupationLabel;
     private JTextField nameField;
     private JTextField occupationField;
     private JList<AgeCategory> ageList;
-    private JButton okButton;
+    private JComboBox maritalStatusBox;
+    private JButton submit;
 
     private FormListener formListener;
 
@@ -17,12 +16,12 @@ public class FormPanel extends JPanel {
         dimension.width = 250; // The layout manager does not respect the preferred height.
         setPreferredSize(dimension);
 
-        nameLabel = new JLabel("name");
-        occupationLabel = new JLabel("occupation");
         nameField = new JTextField(10);
         occupationField = new JTextField(10);
         ageList = new JList();
+        maritalStatusBox = new JComboBox<String>();
 
+        // Set up list box.
         DefaultListModel ageModel = new DefaultListModel();
         ageModel.addElement(new AgeCategory(0,"under 18"));
         ageModel.addElement(new AgeCategory(1,"18 to 65"));
@@ -33,9 +32,21 @@ public class FormPanel extends JPanel {
         ageList.setBorder(BorderFactory.createEtchedBorder());
         ageList.setSelectedIndex(1);
 
-        okButton = new JButton("Submit");
+        // Set up combo box.
+        DefaultComboBoxModel maritalStatusModel = new DefaultComboBoxModel();
+        maritalStatusModel.addElement("single");
+        maritalStatusModel.addElement("married");
+        maritalStatusModel.addElement("cohabiting");
+        maritalStatusModel.addElement("divorced");
+        maritalStatusModel.addElement("widowed");
 
-        okButton.addActionListener(
+        maritalStatusBox.setModel(maritalStatusModel);
+        maritalStatusBox.setSelectedIndex(0);
+
+
+        submit = new JButton("Submit");
+
+        submit.addActionListener(
                 event -> {
                     if (formListener != null) {
                         formListener.formEventOccurred(
@@ -43,7 +54,8 @@ public class FormPanel extends JPanel {
                                         this,
                                         nameField.getText(),
                                         occupationField.getText(),
-                                        ageList.getSelectedValue().getId()
+                                        ageList.getSelectedValue().getId(),
+                                        (String) maritalStatusBox.getSelectedItem()
                         )
                 );
             }
@@ -53,60 +65,95 @@ public class FormPanel extends JPanel {
         Border outerBorder = BorderFactory.createEmptyBorder(5,5,5,5);
         setBorder(BorderFactory.createCompoundBorder(innerBorder, outerBorder));
 
+        layoutComponents();
+    }
+
+    public void layoutComponents() {
         setLayout(new GridBagLayout());
 
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
         /////////////// First Row //////////////////////////////////
+        gridBagConstraints.gridy = 0;
+
         gridBagConstraints.weightx = 1;
         gridBagConstraints.weighty = 0.1;
 
+        // Name label.
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = GridBagConstraints.NONE;
         gridBagConstraints.anchor = GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new Insets(0,0,0,5);
-        add(nameLabel, gridBagConstraints);
+        add(new JLabel("name:"), gridBagConstraints);
 
+        // Name value.
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new Insets(0,0,0,0);
         add(nameField, gridBagConstraints);
 
         /////////////// Second Row //////////////////////////////////
+        gridBagConstraints.gridy++;
+
         gridBagConstraints.weightx = 1;
         gridBagConstraints.weighty = 0.1;
 
+        // Occupation label.
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = GridBagConstraints.LINE_END;
         gridBagConstraints.insets = new Insets(0,0,0,5);
-        add(occupationLabel, gridBagConstraints);
+        add(new JLabel("Occupation:"), gridBagConstraints);
 
+        // Occupation value.
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = GridBagConstraints.LINE_START;
         gridBagConstraints.insets = new Insets(0,0,0,0);
         add(occupationField, gridBagConstraints);
 
         /////////////// Third Row //////////////////////////////////
+        gridBagConstraints.gridy++;
+
         gridBagConstraints.weightx = 1;
         gridBagConstraints.weighty = 0.1;
 
+        // Age category value.
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
+        gridBagConstraints.insets = new Insets(0,0,0,5);
+        add(new JLabel("Age:"), gridBagConstraints);
+
+        // Age category list box.
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
         add(ageList, gridBagConstraints);
 
         /////////////// Fourth Row //////////////////////////////////
+        gridBagConstraints.gridy++;
+
+        gridBagConstraints.weightx = 1;
+        gridBagConstraints.weighty = 0.1;
+
+        // Marital status label.
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = GridBagConstraints.FIRST_LINE_END;
+        gridBagConstraints.insets = new Insets(0,0,0,5);
+        add(new JLabel("Marital Status:"), gridBagConstraints);
+
+        // Marital status combo box.
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
+        add(maritalStatusBox, gridBagConstraints);
+
+        /////////////// Fourth Row //////////////////////////////////
+        gridBagConstraints.gridy++;
+
         gridBagConstraints.weightx = 1;
         gridBagConstraints.weighty = 2;
 
+        // Submit button.
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
-        add(okButton, gridBagConstraints);
+        add(submit, gridBagConstraints);
     }
 
     public void setFormListener(FormListener formListener) {

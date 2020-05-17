@@ -18,11 +18,12 @@ public class MainFrame extends JFrame {
         toolbar.setStringListener(text -> textPanel.appendText(text));
 
         formPanel.setFormListener(formEvent -> {
-            String name = "Name = " + formEvent.getName();
-            String occupation = "Occupation = " + formEvent.getOccupation();
-            String ageCategory = "Age category = " + formEvent.getAgeCategory();
+            String name = "Name: = " + formEvent.getName();
+            String occupation = "Occupation: = " + formEvent.getOccupation();
+            String ageCategory = "Age category: = " + formEvent.getAgeCategory();
+            String maritalStatus = "Marital status:" + formEvent.getMaritalStatus();
 
-            textPanel.appendText(name + "\n" + occupation + "\n" + ageCategory + "\n");
+            textPanel.appendText(name + "\n" + occupation + "\n" + ageCategory + "\n" + maritalStatus + "\n");
         });
 
         add(formPanel, BorderLayout.WEST);
