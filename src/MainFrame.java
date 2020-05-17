@@ -41,7 +41,8 @@ public class MainFrame extends JFrame {
         add(textPanel, BorderLayout.CENTER);
         add(toolbar, BorderLayout.NORTH);
 
-        setSize(500, 400);
+        setSize(600, 500);
+        setMinimumSize(new Dimension(500, 400));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
@@ -86,7 +87,17 @@ public class MainFrame extends JFrame {
         );
 
         exitItem.addActionListener(
-                event -> System.exit(0)
+                event -> {
+                    int action = JOptionPane.showConfirmDialog(
+                            MainFrame.this,
+                            "Do you really want to exit?",
+                            "Confirm exit",
+                            JOptionPane.OK_CANCEL_OPTION);
+
+                    if (action == JOptionPane.OK_OPTION){
+                        System.exit(0);
+                    }
+                }
         );
 
         // Mnemonics
