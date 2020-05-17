@@ -7,6 +7,7 @@ public class MainFrame extends JFrame {
     private TextPanel textPanel;
     private Toolbar toolbar;
     private FormPanel formPanel;
+    private JFileChooser fileChooser;
 
     public MainFrame() {
         super("Hello World");
@@ -17,6 +18,8 @@ public class MainFrame extends JFrame {
         textPanel = new TextPanel();
         toolbar = new Toolbar();
         formPanel = new FormPanel();
+        fileChooser = new JFileChooser();
+        fileChooser.addChoosableFileFilter(new PersonFileFilter());
 
         toolbar.setStringListener(text -> textPanel.appendText(text));
 
@@ -79,6 +82,22 @@ public class MainFrame extends JFrame {
         windowMenu.add(showMenu);
 
         // Action listeners.
+        importDataItem.addActionListener(
+                event -> {
+                    if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+                        System.out.println(fileChooser.getSelectedFile());
+                    }
+                }
+        );
+
+        exportDataItem.addActionListener(
+                event -> {
+                    if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+                        System.out.println(fileChooser.getSelectedFile());
+                    }
+                }
+        );
+
         showFormItem.addActionListener(
                 event -> {
                     JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem) event.getSource();
