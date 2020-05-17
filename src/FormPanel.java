@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 public class FormPanel extends JPanel {
@@ -7,6 +8,10 @@ public class FormPanel extends JPanel {
         Dimension dimension = getPreferredSize();
         dimension.width = 250; // The layout manager does not respect the preferred height.
         setPreferredSize(dimension);
+
+        Border innerBorder = BorderFactory.createTitledBorder("Person");
+        Border outerBorder = BorderFactory.createEmptyBorder(5,5,5,5);
+        setBorder(BorderFactory.createCompoundBorder(innerBorder, outerBorder));
     }
 
 }
