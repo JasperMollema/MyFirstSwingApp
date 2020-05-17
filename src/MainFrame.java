@@ -21,14 +21,16 @@ public class MainFrame extends JFrame {
             String name = "Name: " + formEvent.getName();
             String occupation = "Occupation: " + formEvent.getOccupation();
             String ageCategory = "Age category: " + formEvent.getAgeCategory();
-            String maritalStatus = "Marital status:" + formEvent.getMaritalStatus();
+            String maritalStatus = "Marital status: " + formEvent.getMaritalStatus();
+            String gender = "Gender : " + formEvent.getGender();
 
             textPanel.appendText(
                     name + "\n"
                             + occupation + "\n"
                             + ageCategory + "\n"
                             + maritalStatus + "\n"
-                            + getIsClubMemberString(formEvent)
+                            + getIsClubMemberString(formEvent) + "\n"
+                            + gender + "\n\n"
             );
         });
 
@@ -43,10 +45,10 @@ public class MainFrame extends JFrame {
 
     private String getIsClubMemberString(FormEvent formEvent) {
         String isClubMemberValue = formEvent.isClubMember() ? "Yes" : "No";
-        String isClubMember = "Club member: " + isClubMemberValue + "\n";
+        String isClubMember = "Club member: " + isClubMemberValue;
 
         if (formEvent.isClubMember()) {
-            isClubMember += "Member id: " + formEvent.getMemberID() + "\n";
+            isClubMember += "\nMember id: " + formEvent.getMemberID();
         }
 
         return isClubMember;

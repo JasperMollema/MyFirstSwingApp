@@ -10,6 +10,9 @@ public class FormPanel extends JPanel {
     private JCheckBox clubMemberCheck;
     private JLabel memberIdLabel;
     private JTextField memberIdField;
+    private JRadioButton maleRadioButton;
+    private JRadioButton femaleRadioButton;
+    private ButtonGroup genderRadioButtonGroup;
     private JButton submit;
 
     private FormListener formListener;
@@ -63,6 +66,16 @@ public class FormPanel extends JPanel {
                 }
         );
 
+        // Set up gender buttons.
+        maleRadioButton = new JRadioButton("male");
+        femaleRadioButton = new JRadioButton("female");
+        genderRadioButtonGroup = new ButtonGroup();
+
+        maleRadioButton.setActionCommand("male");
+        femaleRadioButton.setActionCommand("female");
+        genderRadioButtonGroup.add(maleRadioButton);
+        genderRadioButtonGroup.add(femaleRadioButton);
+
         // Set up submit button.
         submit = new JButton("Submit");
 
@@ -77,7 +90,8 @@ public class FormPanel extends JPanel {
                                         ageList.getSelectedValue().getId(),
                                         (String) maritalStatusBox.getSelectedItem(),
                                         clubMemberCheck.isSelected(),
-                                        memberIdField.getText()
+                                        memberIdField.getText(),
+                                        genderRadioButtonGroup.getSelection().getActionCommand()
                         )
                 );
             }
@@ -201,6 +215,34 @@ public class FormPanel extends JPanel {
         add(memberIdField, gridBagConstraints);
 
         /////////////// Seventh Row //////////////////////////////////
+        gridBagConstraints.gridy++;
+
+        gridBagConstraints.weightx = 1;
+        gridBagConstraints.weighty = 0.002;
+
+        // Gender label.
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = GridBagConstraints.LINE_END;
+        gridBagConstraints.insets = new Insets(0,0,0,5);
+        add(new JLabel("Gender:"), gridBagConstraints);
+
+        // Gender is male.
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
+        add(maleRadioButton, gridBagConstraints);
+
+        /////////////// Eight Row //////////////////////////////////
+        gridBagConstraints.gridy++;
+
+        gridBagConstraints.weightx = 1;
+        gridBagConstraints.weighty = 0.1;
+
+        // Gender is female.
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
+        add(femaleRadioButton, gridBagConstraints);
+
+        /////////////// Ninth Row //////////////////////////////////
         gridBagConstraints.gridy++;
 
         gridBagConstraints.weightx = 1;
