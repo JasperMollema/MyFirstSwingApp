@@ -17,6 +17,13 @@ public class MainFrame extends JFrame {
 
         toolbar.setStringListener(text -> textPanel.appendText(text));
 
+        formPanel.setFormListener(formEvent -> {
+            String name = "Name = " + formEvent.getName();
+            String occupation = "Occupation = " + formEvent.getOccupation();
+
+            textPanel.appendText(name + "\n" + occupation + "\n");
+        });
+
         add(formPanel, BorderLayout.WEST);
         add(textPanel, BorderLayout.CENTER);
         add(toolbar, BorderLayout.NORTH);

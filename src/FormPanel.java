@@ -9,6 +9,8 @@ public class FormPanel extends JPanel {
     private JTextField occupationField;
     private JButton okButton;
 
+    private FormListener formListener;
+
     public FormPanel() {
         Dimension dimension = getPreferredSize();
         dimension.width = 250; // The layout manager does not respect the preferred height.
@@ -19,7 +21,19 @@ public class FormPanel extends JPanel {
         nameField = new JTextField(10);
         occupationField = new JTextField(10);
 
-        okButton = new JButton("OK");
+        okButton = new JButton("Submit");
+
+        okButton.addActionListener(
+                event -> {
+            String name = nameField.getText();
+            String occupation = occupationField.getText();
+
+            FormEvent formEvent = new FormEvent(this, name, occupation);
+
+            if (formListener != null) {
+                formListener.formEventOccurred(formEvent);
+            }
+        });
 
         Border innerBorder = BorderFactory.createTitledBorder("Person");
         Border outerBorder = BorderFactory.createEmptyBorder(5,5,5,5);
@@ -72,4 +86,7 @@ public class FormPanel extends JPanel {
         add(okButton, gridBagConstraints);
     }
 
+    public void setFormListener(FormListener formListener) {
+        this.formListener = formListener;
+    }
 }

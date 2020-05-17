@@ -29,8 +29,8 @@ public class Toolbar extends JPanel implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        JButton clicked = (JButton)e.getSource();
+    public void actionPerformed(ActionEvent event) {
+        JButton clicked = (JButton)event.getSource();
 
         if (clicked == helloButton && stringListener != null) {
             stringListener.textEmitted("Hello\n");
