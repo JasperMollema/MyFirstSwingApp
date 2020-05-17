@@ -1,3 +1,5 @@
+package gui;
+
 public class AgeCategory {
     private int id;
     private String category;
