@@ -10,6 +10,7 @@ public class MainFrame extends JFrame {
         super("Hello World");
 
         setLayout(new BorderLayout());
+        setJMenuBar(createMenuBar());
 
         textPanel = new TextPanel();
         toolbar = new Toolbar();
@@ -52,5 +53,33 @@ public class MainFrame extends JFrame {
         }
 
         return isClubMember;
+    }
+
+    private JMenuBar createMenuBar() {
+        // File menu.
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem exportDataItem = new JMenuItem("Export data..");
+        JMenuItem importDataItem = new JMenuItem("Import data..");
+        JMenuItem exitItem = new JMenuItem("Exit");
+
+        fileMenu.add(exportDataItem);
+        fileMenu.add(importDataItem);
+        fileMenu.add(exitItem);
+
+        // Window menu.
+        JMenu windowMenu = new JMenu("Window");
+        JMenu showMenu = new JMenu("Show");
+        JMenuItem showFormItem = new JMenuItem("Person form");
+
+        showMenu.add(showFormItem);
+        windowMenu.add(showMenu);
+
+        // Menu Bar.
+        JMenuBar menuBar = new JMenuBar();
+
+        menuBar.add(fileMenu);
+        menuBar.add(windowMenu);
+
+        return menuBar;
     }
 }
