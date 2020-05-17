@@ -7,6 +7,7 @@ public class FormPanel extends JPanel {
     private JLabel occupationLabel;
     private JTextField nameField;
     private JTextField occupationField;
+    private JList ageList;
     private JButton okButton;
 
     private FormListener formListener;
@@ -20,6 +21,17 @@ public class FormPanel extends JPanel {
         occupationLabel = new JLabel("occupation");
         nameField = new JTextField(10);
         occupationField = new JTextField(10);
+        ageList = new JList();
+
+        DefaultListModel ageModel = new DefaultListModel();
+        ageModel.addElement("under 18");
+        ageModel.addElement("18 to 65");
+        ageModel.addElement("65 or over");
+
+        ageList.setModel(ageModel);
+        ageList.setPreferredSize(new Dimension(115, 60));
+        ageList.setBorder(BorderFactory.createEtchedBorder());
+        ageList.setSelectedIndex(1);
 
         okButton = new JButton("Submit");
 
@@ -27,6 +39,9 @@ public class FormPanel extends JPanel {
                 event -> {
             String name = nameField.getText();
             String occupation = occupationField.getText();
+            String ageCat = (String)ageList.getSelectedValue();
+
+            System.out.println(ageCat);
 
             FormEvent formEvent = new FormEvent(this, name, occupation);
 
@@ -78,10 +93,19 @@ public class FormPanel extends JPanel {
 
         /////////////// Third Row //////////////////////////////////
         gridBagConstraints.weightx = 1;
-        gridBagConstraints.weighty = 2;
+        gridBagConstraints.weighty = 0.1;
 
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
+        add(ageList, gridBagConstraints);
+
+        /////////////// Fourth Row //////////////////////////////////
+        gridBagConstraints.weightx = 1;
+        gridBagConstraints.weighty = 2;
+
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
         add(okButton, gridBagConstraints);
     }
