@@ -20,8 +20,9 @@ public class MainFrame extends JFrame {
         formPanel.setFormListener(formEvent -> {
             String name = "Name = " + formEvent.getName();
             String occupation = "Occupation = " + formEvent.getOccupation();
+            String ageCategory = "Age category = " + formEvent.getAgeCategory();
 
-            textPanel.appendText(name + "\n" + occupation + "\n");
+            textPanel.appendText(name + "\n" + occupation + "\n" + ageCategory + "\n");
         });
 
         add(formPanel, BorderLayout.WEST);
