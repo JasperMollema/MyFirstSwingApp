@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 public class MainFrame extends JFrame {
     private TextPanel textPanel;
@@ -82,6 +84,18 @@ public class MainFrame extends JFrame {
                     formPanel.setVisible(menuItem.isSelected());
                 }
         );
+
+        exitItem.addActionListener(
+                event -> System.exit(0)
+        );
+
+        // Mnemonics
+        fileMenu.setMnemonic(KeyEvent.VK_F);
+        exitItem.setMnemonic(KeyEvent.VK_E);
+        windowMenu.setMnemonic(KeyEvent.VK_W);
+
+        // Accelerators.
+        exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
 
         // Menu Bar.
         JMenuBar menuBar = new JMenuBar();
