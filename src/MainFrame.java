@@ -4,7 +4,7 @@ import java.awt.*;
 public class MainFrame extends JFrame {
     private TextPanel textPanel;
     private Toolbar toolbar;
-    private JButton button;
+    private FormPanel formPanel;
 
     public MainFrame() {
         super("Hello World");
@@ -12,17 +12,13 @@ public class MainFrame extends JFrame {
         setLayout(new BorderLayout());
 
         textPanel = new TextPanel();
-        button = new JButton("click me");
         toolbar = new Toolbar();
+        formPanel = new FormPanel();
 
         toolbar.setStringListener(text -> textPanel.appendText(text));
 
-        button.addActionListener(
-                event -> textPanel.appendText("Hello\n")
-                );
-
+        add(formPanel, BorderLayout.WEST);
         add(textPanel, BorderLayout.CENTER);
-        add(button, BorderLayout.SOUTH);
         add(toolbar, BorderLayout.NORTH);
 
         setSize(500, 400);
