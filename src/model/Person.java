@@ -24,4 +24,9 @@ public class Person {
 
         this.id = count++;
     }
+
+    @Override
+    public String toString() {
+        return "name : " + name;
+    }
 }

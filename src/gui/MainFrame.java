@@ -1,5 +1,7 @@
 package gui;
 
+import controller.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,6 +12,7 @@ public class MainFrame extends JFrame {
     private Toolbar toolbar;
     private FormPanel formPanel;
     private JFileChooser fileChooser;
+    private Controller controller;
 
     public MainFrame() {
         super("Hello World");
@@ -20,6 +23,7 @@ public class MainFrame extends JFrame {
         textPanel = new TextPanel();
         toolbar = new Toolbar();
         formPanel = new FormPanel();
+        controller = new Controller();
         fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
 
@@ -40,6 +44,8 @@ public class MainFrame extends JFrame {
                             + getIsClubMemberString(formEvent) + "\n"
                             + gender + "\n\n"
             );
+
+            controller.addPerson(createFormPerson(formEvent));
         });
 
         add(formPanel, BorderLayout.WEST);
@@ -61,6 +67,19 @@ public class MainFrame extends JFrame {
         }
 
         return isClubMember;
+    }
+
+    private FormPerson createFormPerson(FormEvent formEvent) {
+        FormPerson formPerson = new FormPerson();
+        formPerson.name = formEvent.getName();
+        formPerson.occupation = formEvent.getOccupation();
+        formPerson.ageCategory = formEvent.getAgeCategory();
+        formPerson.maritalStatus = formEvent.getMaritalStatus();
+        formPerson.gender = formEvent.getGender();
+        formPerson.isClubMember = formEvent.isClubMember();
+        formPerson.memberId = formEvent.getMemberID();
+
+        return formPerson;
     }
 
     private JMenuBar createMenuBar() {

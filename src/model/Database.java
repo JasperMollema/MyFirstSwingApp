@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Database {
-    private List<Person> people;
+    private List<Person> personList;
 
     public Database() {
-        people = new ArrayList<>();
+        personList = new ArrayList<>();
     }
 
     public void addPerson(Person person) {
-        people.add(person);
+        personList.add(person);
+        personList.stream().forEach(p -> System.out.println(p));
     }
 
-    public List<Person> getPeople() {
-        return people;
+    public List<Person> getPersonList() {
+        return personList;
     }
 }
