@@ -29,4 +29,36 @@ public class Person {
     public String toString() {
         return "name : " + name;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public AgeCategory getAgeCategory() {
+        return ageCategory;
+    }
+
+    public MaritalStatus getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public Boolean getIsClubMember() {
+        return isClubMember;
+    }
+
+    public String getMemberID() {
+        return memberID;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
 }

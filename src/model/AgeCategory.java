@@ -1,5 +1,5 @@
 package model;
 
 public enum AgeCategory {
-    CHILD, ADULT, SENIOR
+    CHILD, ADULT, SENIOR;
 }

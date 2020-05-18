@@ -77,6 +77,7 @@ public class FormPanel extends JPanel {
         femaleRadioButton.setActionCommand("female");
         genderRadioButtonGroup.add(maleRadioButton);
         genderRadioButtonGroup.add(femaleRadioButton);
+        maleRadioButton.setSelected(true);
 
         // Set up submit button.
         submit = new JButton("Submit");
