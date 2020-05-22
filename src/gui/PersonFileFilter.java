@@ -7,7 +7,7 @@ public class PersonFileFilter extends FileFilter {
     @Override
     public boolean accept(File file) {
         String name = Utils.getFileExtension(file.getName());
-        return file.isDirectory() || name.equals("per");
+        return file.isDirectory() || name !=null && name.equals("per");
     }
 
     @Override

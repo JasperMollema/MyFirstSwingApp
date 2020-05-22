@@ -3,6 +3,8 @@ package controller;
 import gui.FormPerson;
 import model.*;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,21 @@ public class Controller {
 
     public List<FormPerson> getPersonList() {
         List<Person> personList = database.getPersonList();
+        List<FormPerson> formPersonList = new ArrayList<>();
+
+        for (Person person : personList) {
+            formPersonList.add(fillFormPerson(person));
+        }
+
+        return formPersonList;
+    }
+
+    public void savePersonsToFile(File file) throws IOException {
+        database.savePersons(file);
+    }
+
+    public List<FormPerson> loadFromFile(File file) throws IOException, ClassNotFoundException {
+        List<Person> personList = database.loadPersons(file);
         List<FormPerson> formPersonList = new ArrayList<>();
 
         for (Person person : personList) {

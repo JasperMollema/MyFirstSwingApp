@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 public class MainFrame extends JFrame {
     private TextPanel textPanel;
@@ -110,7 +111,16 @@ public class MainFrame extends JFrame {
         importDataItem.addActionListener(
                 event -> {
                     if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
-                        System.out.println(fileChooser.getSelectedFile());
+                        try {
+                            tablePanel.fillTable(controller.loadFromFile(fileChooser.getSelectedFile()));
+                            tablePanel.refresh();
+                        } catch (IOException | ClassNotFoundException e) {
+                            JOptionPane.showMessageDialog(
+                                    MainFrame.this,
+                                    "Could not load data from file",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
         );
@@ -118,7 +128,15 @@ public class MainFrame extends JFrame {
         exportDataItem.addActionListener(
                 event -> {
                     if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
-                        System.out.println(fileChooser.getSelectedFile());
+                        try {
+                            controller.savePersonsToFile(fileChooser.getSelectedFile());
+                        } catch (IOException e) {
+                            JOptionPane.showMessageDialog(
+                                    MainFrame.this,
+                                    "Could not save data from file",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
         );
