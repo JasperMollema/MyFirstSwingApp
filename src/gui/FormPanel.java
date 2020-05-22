@@ -97,6 +97,7 @@ public class FormPanel extends JPanel {
                                         genderRadioButtonGroup.getSelection().getActionCommand()
                         )
                 );
+                        clearForm();
             }
         });
 
@@ -107,7 +108,19 @@ public class FormPanel extends JPanel {
         layoutComponents();
     }
 
-    public void layoutComponents() {
+    private void clearForm() {
+        nameField.setText(null);
+        occupationField.setText(null);
+        ageList.setSelectedIndex(1);
+        maritalStatusBox.setSelectedIndex(0);
+        clubMemberCheck.setSelected(false);
+        memberIdField.setText(null);
+        memberIdField.setEnabled(false);
+        memberIdLabel.setEnabled(false);
+        maleRadioButton.setSelected(true);
+    }
+
+    private void layoutComponents() {
         setLayout(new GridBagLayout());
 
         GridBagConstraints gridBagConstraints = new GridBagConstraints();

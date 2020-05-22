@@ -13,7 +13,6 @@ public class Database {
 
     public void addPerson(Person person) {
         personList.add(person);
-        personList.stream().forEach(p -> System.out.println(p));
     }
 
     public List<Person> getPersonList() {
