@@ -32,6 +32,13 @@ public class MainFrame extends JFrame {
 
         toolbar.setStringListener(text -> textPanel.appendText(text));
 
+        tablePanel.setPersonTableListener(
+                row -> {
+            controller.deletePerson(row);
+            tablePanel.fillTable(controller.getPersonList());
+            tablePanel.refresh();
+        });
+
         formPanel.setFormListener(formEvent -> {
             String name = "Name: " + formEvent.getName();
             String occupation = "Occupation: " + formEvent.getOccupation();
@@ -168,6 +175,8 @@ public class MainFrame extends JFrame {
         windowMenu.setMnemonic(KeyEvent.VK_W);
 
         // Accelerators.
+        importDataItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
+        exportDataItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
         exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
 
         // Menu Bar.

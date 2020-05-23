@@ -1,22 +1,31 @@
 package model;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Database {
     private List<Person> personList;
 
     public Database() {
-        personList = new ArrayList<>();
+        personList = new LinkedList<>();
     }
 
     public void addPerson(Person person) {
         personList.add(person);
     }
 
+    public void deletePerson(int row) {
+        personList.remove(row);
+    }
+
+    public void clear() {
+        personList.clear();
+    }
+
     public List<Person> getPersonList() {
-        return personList;
+        return Collections.unmodifiableList(personList);
     }
 
     public void savePersons(File file) throws IOException {
@@ -29,21 +38,18 @@ public class Database {
         }
     }
 
-    public List<Person> loadPersons(File file) throws IOException, ClassNotFoundException{
-        List<Person> loadedPersons = new ArrayList<>();
+    public void loadPersons(File file) throws IOException, ClassNotFoundException{
 
         try (ObjectInputStream inputStream = new ObjectInputStream
                 (new BufferedInputStream(new FileInputStream(file)))) {
             while (true) {
                 Object object = inputStream.readObject();
                 if (object instanceof Person) {
-                    loadedPersons.add((Person)object);
+                    personList.add((Person)object);
                 }
             }
         } catch (EOFException eofException) {
             // Reached the end of the file.
         }
-
-        return loadedPersons;
     }
 }

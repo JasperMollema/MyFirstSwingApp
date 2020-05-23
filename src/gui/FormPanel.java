@@ -84,7 +84,7 @@ public class FormPanel extends JPanel {
 
         submit.addActionListener(
                 event -> {
-                    if (formListener != null) {
+                    if (formListener != null && validateForm()) {
                         formListener.formEventOccurred(
                                 new FormEvent(
                                         this,
@@ -106,6 +106,18 @@ public class FormPanel extends JPanel {
         setBorder(BorderFactory.createCompoundBorder(innerBorder, outerBorder));
 
         layoutComponents();
+    }
+
+    private boolean validateForm() {
+        if (nameField.getText() == null || nameField.getText().equals("")) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Please fill in a name",
+                    "Empty field",
+                    JOptionPane.OK_OPTION);
+            return false;
+        }
+        return true;
     }
 
     private void clearForm() {
