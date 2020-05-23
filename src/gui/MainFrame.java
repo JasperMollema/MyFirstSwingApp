@@ -14,6 +14,7 @@ public class MainFrame extends JFrame {
     private FormPanel formPanel;
     private JFileChooser fileChooser;
     private TablePanel tablePanel;
+    private PreferenceDialog preferenceDialog;
     private Controller controller;
 
     public MainFrame() {
@@ -26,6 +27,7 @@ public class MainFrame extends JFrame {
         toolbar = new Toolbar();
         formPanel = new FormPanel();
         tablePanel = new TablePanel();
+        preferenceDialog = new PreferenceDialog(this);
         controller = new Controller();
         fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
@@ -110,11 +112,18 @@ public class MainFrame extends JFrame {
         JMenu showMenu = new JMenu("Show");
         JCheckBoxMenuItem showFormItem = new JCheckBoxMenuItem("Person form");
         showFormItem.setSelected(true);
+        JMenuItem preferencesItem = new JMenuItem("Preferences...");
+
 
         showMenu.add(showFormItem);
         windowMenu.add(showMenu);
+        windowMenu.add(preferencesItem);
 
         // Action listeners.
+        preferencesItem.addActionListener(
+                event -> preferenceDialog.setVisible(true)
+        );
+
         importDataItem.addActionListener(
                 event -> {
                     if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
