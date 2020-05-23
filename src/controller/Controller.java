@@ -45,14 +45,10 @@ public class Controller {
     }
 
     public List<FormPerson> loadFromFile(File file) throws IOException, ClassNotFoundException {
-        List<Person> personList = database.loadPersons(file);
-        List<FormPerson> formPersonList = new ArrayList<>();
+        database.clear();
+        database.loadPersons(file);
 
-        for (Person person : personList) {
-            formPersonList.add(fillFormPerson(person));
-        }
-
-        return formPersonList;
+        return getPersonList();
     }
 
     private FormPerson fillFormPerson(Person person) {
@@ -68,6 +64,10 @@ public class Controller {
         formPerson.gender = fillGender(person.getGender());
 
         return formPerson;
+    }
+
+    public void deletePerson(int row) {
+        database.deletePerson(row);
     }
 
     private String fillMaritalStatus(MaritalStatus maritalStatus) {
