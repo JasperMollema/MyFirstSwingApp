@@ -10,6 +10,7 @@ public class PreferenceDialog extends JDialog {
     private JButton cancelButton;
     private JSpinner portSpinner;
     private SpinnerNumberModel spinnerModel;
+    private PreferencesListener preferencesListener;
 
     public PreferenceDialog(JFrame parent) {
         super(parent, "Preferences", false);
@@ -34,8 +35,14 @@ public class PreferenceDialog extends JDialog {
     private void addActionListeners() {
         okButton.addActionListener(
                 event -> {
-                    Integer value = (Integer) spinnerModel.getValue();
-                    System.out.println(value);
+                    if (preferencesListener != null) {
+                        preferencesListener.setPreferences(
+                                userField.getText(),
+                                new String(passwordField.getPassword()),
+                                ((Integer)spinnerModel.getValue())
+                        );
+                    }
+
                     setVisible(false);
                 }
         );
@@ -92,5 +99,15 @@ public class PreferenceDialog extends JDialog {
         gridBagConstraints.weightx = 2;
         gridBagConstraints.anchor = GridBagConstraints.LINE_START;
         add(cancelButton, gridBagConstraints);
+    }
+
+    public void setDefaults(String user, String password, Integer port) {
+        userField.setText(user);
+        passwordField.setText(password);
+        portSpinner.setValue(port);
+    }
+
+    public void setPreferencesListener(PreferencesListener preferencesListener) {
+        this.preferencesListener = preferencesListener;
     }
 }

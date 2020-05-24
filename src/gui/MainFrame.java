@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.prefs.Preferences;
 
 public class MainFrame extends JFrame {
     private TextPanel textPanel;
@@ -16,6 +17,7 @@ public class MainFrame extends JFrame {
     private TablePanel tablePanel;
     private PreferenceDialog preferenceDialog;
     private Controller controller;
+    private Preferences preferences;
 
     public MainFrame() {
         super("Hello World");
@@ -31,16 +33,39 @@ public class MainFrame extends JFrame {
         controller = new Controller();
         fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
+        preferences = Preferences.userRoot().node("db");
 
+        addTableListener();
+        addStringListener();
+        addFormListener();
+        addPreferenceListener();
+
+        setDefaultsPreferenceDialogue();
+
+        add(formPanel, BorderLayout.WEST);
+        add(tablePanel, BorderLayout.CENTER);
+        add(toolbar, BorderLayout.NORTH);
+
+        setSize(600, 500);
+        setMinimumSize(new Dimension(500, 400));
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+
+    private void addStringListener() {
         toolbar.setStringListener(text -> textPanel.appendText(text));
+    }
 
+    private void addTableListener() {
         tablePanel.setPersonTableListener(
                 row -> {
-            controller.deletePerson(row);
-            tablePanel.fillTable(controller.getPersonList());
-            tablePanel.refresh();
-        });
+                    controller.deletePerson(row);
+                    tablePanel.fillTable(controller.getPersonList());
+                    tablePanel.refresh();
+                });
+    }
 
+    private void addFormListener() {
         formPanel.setFormListener(formEvent -> {
             String name = "Name: " + formEvent.getName();
             String occupation = "Occupation: " + formEvent.getOccupation();
@@ -61,15 +86,24 @@ public class MainFrame extends JFrame {
             tablePanel.fillTable(controller.getPersonList());
             tablePanel.refresh();
         });
+    }
 
-        add(formPanel, BorderLayout.WEST);
-        add(tablePanel, BorderLayout.CENTER);
-        add(toolbar, BorderLayout.NORTH);
+    private void addPreferenceListener() {
+        preferenceDialog.setPreferencesListener(
+                (String user, String password, Integer port) -> {
+                    preferences.put("user", user);
+                    preferences.put("password", password);
+                    preferences.putInt("port", port);
+                }
+        );
+    }
 
-        setSize(600, 500);
-        setMinimumSize(new Dimension(500, 400));
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+    private void setDefaultsPreferenceDialogue() {
+        preferenceDialog.setDefaults(
+                preferences.get("user", ""),
+                preferences.get("password", ""),
+                preferences.getInt("port", 3306)
+        );
     }
 
     private String getIsClubMemberString(FormEvent formEvent) {
