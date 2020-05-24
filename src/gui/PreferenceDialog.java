@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 public class PreferenceDialog extends JDialog {
@@ -15,7 +16,7 @@ public class PreferenceDialog extends JDialog {
     public PreferenceDialog(JFrame parent) {
         super(parent, "Preferences", false);
 
-        setSize(400, 300);
+        setSize(300, 220);
         setLocationRelativeTo(parent);
         setLayout(new GridBagLayout());
 
@@ -51,54 +52,75 @@ public class PreferenceDialog extends JDialog {
     }
 
     private void layoutComponents() {
+        JPanel controlsPanel = new JPanel();
+        JPanel buttonsPanel = new JPanel();
+
+        int space = 15;
+        Border titleBorder = BorderFactory.createTitledBorder("Database preferences");
+        Border spaceBorder = BorderFactory.createEmptyBorder(space, space, space, space);
+
+        controlsPanel.setBorder(BorderFactory.createCompoundBorder(spaceBorder, titleBorder));
+
+        ///////////  Controls panel /////////////////
+        controlsPanel.setLayout(new GridBagLayout());
         GridBagConstraints gridBagConstraints= new GridBagConstraints();
 
+        Insets rightPadding = new Insets(0, 0, 0, 15);
+        Insets noPadding = new Insets(0,0,0,0);
+
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.weightx = 3;
+
+        // First row
+        gridBagConstraints.weightx = 1;
         gridBagConstraints.weighty = 1;
         gridBagConstraints.fill = GridBagConstraints.NONE;
 
-        /////////// First row /////////////////
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = GridBagConstraints.LINE_END;
-        add(new JLabel("Port: "), gridBagConstraints);
+        gridBagConstraints.anchor = GridBagConstraints.EAST;
+        gridBagConstraints.insets = rightPadding;
+        controlsPanel.add(new JLabel("Port: "), gridBagConstraints);
 
         gridBagConstraints.gridx++;
-        gridBagConstraints.anchor = GridBagConstraints.LINE_START;
-        add(portSpinner, gridBagConstraints);
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagConstraints.insets = noPadding;
+        controlsPanel.add(portSpinner, gridBagConstraints);
 
-        /////////// Next row /////////////////
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy++;
-        gridBagConstraints.anchor = GridBagConstraints.LINE_END;
-        add(new JLabel("User: "), gridBagConstraints);
-
-        gridBagConstraints.gridx++;
-        gridBagConstraints.anchor = GridBagConstraints.LINE_START;
-        add(userField, gridBagConstraints);
-
-        /////////// Next row /////////////////
+        // Next row
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy++;
-        gridBagConstraints.anchor = GridBagConstraints.LINE_END;
-        add(new JLabel("Password: "), gridBagConstraints);
+        gridBagConstraints.anchor = GridBagConstraints.EAST;
+        gridBagConstraints.insets = rightPadding;
+        controlsPanel.add(new JLabel("User: "), gridBagConstraints);
 
         gridBagConstraints.gridx++;
-        gridBagConstraints.anchor = GridBagConstraints.LINE_START;
-        add(passwordField, gridBagConstraints);
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagConstraints.insets = noPadding;
+        controlsPanel.add(userField, gridBagConstraints);
 
-        /////////// Next row /////////////////
+        // Next row
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy++;
-        gridBagConstraints.weighty = 12;
-        gridBagConstraints.weightx = 6;
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = GridBagConstraints.LINE_END;
-        add(okButton, gridBagConstraints);
+        gridBagConstraints.anchor = GridBagConstraints.EAST;
+        gridBagConstraints.insets = rightPadding;
+        controlsPanel.add(new JLabel("Password: "), gridBagConstraints);
 
         gridBagConstraints.gridx++;
-        gridBagConstraints.weightx = 2;
-        gridBagConstraints.anchor = GridBagConstraints.LINE_START;
-        add(cancelButton, gridBagConstraints);
+        gridBagConstraints.anchor = GridBagConstraints.WEST;
+        gridBagConstraints.insets = noPadding;
+        controlsPanel.add(passwordField, gridBagConstraints);
+
+        /////////// Buttons panel /////////////////
+        buttonsPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        buttonsPanel.add(okButton);
+        buttonsPanel.add(cancelButton);
+
+        Dimension buttonSize = cancelButton.getPreferredSize();
+        okButton.setPreferredSize(buttonSize);
+
+        /////////// Add sub panels /////////////////
+        setLayout(new BorderLayout());
+        add(controlsPanel, BorderLayout.CENTER);
+        add(buttonsPanel, BorderLayout.SOUTH);
     }
 
     public void setDefaults(String user, String password, Integer port) {
