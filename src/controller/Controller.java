@@ -41,12 +41,12 @@ public class Controller {
     }
 
     public void savePersonsToFile(File file) throws IOException {
-        database.savePersons(file);
+        database.savePersonsToFile(file);
     }
 
     public List<FormPerson> loadFromFile(File file) throws IOException, ClassNotFoundException {
         database.clear();
-        database.loadPersons(file);
+        database.loadPersonsFromFile(file);
 
         return getPersonList();
     }

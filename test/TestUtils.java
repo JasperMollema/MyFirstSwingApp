@@ -1,5 +1,3 @@
-package Test;
-
 import gui.Utils;
 import org.junit.jupiter.api.Test;
 
