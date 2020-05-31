@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Person implements Serializable {
     private static final long serialVersionUID = 1L;
-    private static int count;
+    private static int count = 1;
 
     private int id;
     private String name;
@@ -28,9 +28,25 @@ public class Person implements Serializable {
         this.id = count++;
     }
 
+    public Person(int id, String name, String occupation, AgeCategory ageCategory,
+                  MaritalStatus maritalStatus, Boolean isClubMember, String memberID, Gender gender) {
+        this(name, occupation, ageCategory, maritalStatus, isClubMember, memberID, gender);
+
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return "name : " + name;
+        return "Person{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", occupation='" + occupation + '\'' +
+                ", ageCategory=" + ageCategory +
+                ", maritalStatus=" + maritalStatus +
+                ", isClubMember=" + isClubMember +
+                ", memberID='" + memberID + '\'' +
+                ", gender=" + gender +
+                '}';
     }
 
     public int getId() {

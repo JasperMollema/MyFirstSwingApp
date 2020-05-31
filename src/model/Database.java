@@ -58,24 +58,101 @@ public class Database {
         }
     }
 
+    public void load() throws SQLException {
+        personList.clear();
+
+        String selectSql = "select id, name, occupation, age_category, marital_status," +
+                                "is_club_member, member_id, gender from person order by name";
+        Statement selectStatement = connection.createStatement();
+
+        ResultSet resultSet = selectStatement.executeQuery(selectSql);
+
+        while (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            String name = resultSet.getString("name");
+            String occupation = resultSet.getString("occupation");
+            String ageCategory = resultSet.getString("age_category");
+            String maritalStatus = resultSet.getString("marital_status");
+            int isClubMember = resultSet.getInt("is_club_member");
+            String memberId = resultSet.getString("member_id");
+            String gender = resultSet.getString("gender");
+
+            personList.add(new Person(id, name, occupation, AgeCategory.getAgeCategory(ageCategory),
+                    MaritalStatus.getMaritalStatus(maritalStatus), Utils.convertIntToBoolean(isClubMember),
+                    memberId, Gender.getGender(gender)));
+        }
+
+        selectStatement.close();
+        resultSet.close();
+    }
+
     public void save() throws SQLException {
-        String checkSQL = "Select count(*) as count from person where id=?";
-        PreparedStatement checkPerson = connection.prepareStatement(checkSQL);
+        String checkSql = "Select count(*) as count from person where id=?";
+        PreparedStatement checkStatement = connection.prepareStatement(checkSql);
+
+        String insertSql = "insert into person (id, name, occupation, age_category, marital_status, " +
+                "is_club_member, member_id, gender) values (?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement insertStatement = connection.prepareStatement(insertSql);
+
+        String updateSql = "update person set name=?, occupation=?, age_category=?, marital_status=?, " +
+                "is_club_member=?, member_id=?, gender=? where id=?";
+        PreparedStatement updateStatement = connection.prepareStatement(updateSql);
 
         for (Person person : personList) {
             int id = person.getId();
+            String name = person.getName();
+            String occupation = person.getOccupation();
+            AgeCategory ageCategory = person.getAgeCategory();
+            MaritalStatus maritalStatus = person.getMaritalStatus();
+            int isClubMember = person.getIsClubMember() ? 1 : 0;
+            String memberID = person.getMemberID();
+            Gender gender = person.getGender();
 
-            checkPerson.setInt(1, id);
+            checkStatement.setInt(1, id);
 
-            resultSet = checkPerson.executeQuery();
+            resultSet = checkStatement.executeQuery();
             resultSet.next();
 
             int count = resultSet.getInt(1);
 
-            System.out.println("Count for person with ID " + id + " is " + count);
+            if (count == 0) {
+                System.out.println("Inserting person with ID " + id);
+
+                int column = 1;
+                insertStatement.setInt(column++, id);
+                insertStatement.setString(column++, name);
+                insertStatement.setString(column++, occupation);
+                insertStatement.setString(column++, ageCategory.name());
+                insertStatement.setString(column++, maritalStatus.name());
+                insertStatement.setInt(column++, isClubMember);
+                insertStatement.setString(column++, memberID);
+                insertStatement.setString(column++, gender.name());
+
+                int result = insertStatement.executeUpdate();
+                System.out.println("Rows affected : " + result);
+            }
+
+            else {
+                System.out.println("Updating person with ID " + id);
+
+                int column = 1;
+                updateStatement.setString(column++, name);
+                updateStatement.setString(column++, occupation);
+                updateStatement.setString(column++, ageCategory.name());
+                updateStatement.setString(column++, maritalStatus.name());
+                updateStatement.setInt(column++, isClubMember);
+                updateStatement.setString(column++, memberID);
+                updateStatement.setString(column++, gender.name());
+                updateStatement.setInt(column++, id);
+
+                int result = updateStatement.executeUpdate();
+                System.out.println("Rows affected : " + result);
+            }
         }
 
-        checkPerson.close();
+        checkStatement.close();
+        insertStatement.close();
+        updateStatement.close();
     }
 
     public void connect() throws SQLException {
