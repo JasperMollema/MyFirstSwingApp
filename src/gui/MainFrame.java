@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.prefs.Preferences;
 
 public class MainFrame extends JFrame {
@@ -36,7 +37,7 @@ public class MainFrame extends JFrame {
         preferences = Preferences.userRoot().node("db");
 
         addTableListener();
-        addStringListener();
+        addToolbarListener();
         addFormListener();
         addPreferenceListener();
 
@@ -52,8 +53,81 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
-    private void addStringListener() {
-        toolbar.setStringListener(text -> textPanel.appendText(text));
+    private void addToolbarListener() {
+        toolbar.setToolbarListener(new ToolbarListener() {
+            @Override
+            public void saveEventOccurred() {
+                if (!controller.isTableChanged()) {
+                    JOptionPane.showMessageDialog(
+                            MainFrame.this,
+                            "There ar no changes to save",
+                            "No changes made",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+                }
+
+                if (controller.arePersonsDeleted()) {
+                    int action = JOptionPane.showConfirmDialog(
+                            MainFrame.this,
+                            "You have deleted person, are you sure you want to save these changes?",
+                            "Persons deleted",
+                            JOptionPane.OK_CANCEL_OPTION);
+
+                    if (action == JOptionPane.CANCEL_OPTION){
+                        return;
+                    }
+                }
+                connect();
+
+                try {
+                    controller.save();
+                } catch (SQLException exception) {
+                    JOptionPane.showMessageDialog(
+                            MainFrame.this,
+                            "Unable to save to database" ,
+                            "Database Connection Problem",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+            @Override
+            public void loadEventOccurred() {
+                connect();
+
+                try {
+                    if (!controller.load()) {
+                        JOptionPane.showMessageDialog(
+                                MainFrame.this,
+                                "There are no persons to load",
+                                "No persons available",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+                    }
+
+                } catch (SQLException exception) {
+                    JOptionPane.showMessageDialog(
+                            MainFrame.this,
+                            "Unable to load from database" ,
+                            "Database Connection Problem",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+
+                tablePanel.fillTable(controller.getPersonList());
+                tablePanel.refresh();
+            }
+        });
+    }
+
+    private void connect() {
+        try {
+            controller.connectToDatabase();
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(
+                    MainFrame.this,
+                    "Cannot connect to database" ,
+                    "Database Connection Problem",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void addTableListener() {

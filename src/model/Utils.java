@@ -10,7 +10,7 @@ public class Utils {
 
     public static Integer convertBooleanToInteger(Boolean aBoolean) {
         if (aBoolean == null) {
-            return null;
+            return 0;
         }
         return aBoolean? 1 : 0;
     }

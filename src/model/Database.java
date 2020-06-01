@@ -104,7 +104,7 @@ public class Database {
             String occupation = person.getOccupation();
             AgeCategory ageCategory = person.getAgeCategory();
             MaritalStatus maritalStatus = person.getMaritalStatus();
-            int isClubMember = person.getIsClubMember() ? 1 : 0;
+            int isClubMember = Utils.convertBooleanToInteger(person.getIsClubMember());
             String memberID = person.getMemberID();
             Gender gender = person.getGender();
 
@@ -128,6 +128,7 @@ public class Database {
                 insertStatement.setString(column++, memberID);
                 insertStatement.setString(column++, gender.name());
 
+                System.out.println("Going to execute query " + insertStatement);
                 int result = insertStatement.executeUpdate();
                 System.out.println("Rows affected : " + result);
             }
@@ -145,6 +146,7 @@ public class Database {
                 updateStatement.setString(column++, gender.name());
                 updateStatement.setInt(column++, id);
 
+                System.out.println("Going to execute query " + updateStatement);
                 int result = updateStatement.executeUpdate();
                 System.out.println("Rows affected : " + result);
             }
@@ -173,6 +175,7 @@ public class Database {
             connection = DriverManager.getConnection(connectUrl, "root", "jasper");
             statement = connection.createStatement();
             resultSet = statement.getResultSet();
+            System.out.println("Connected to database");
         }
 
         catch (SQLException exception) {
@@ -185,6 +188,7 @@ public class Database {
     public void disconnect() throws SQLException{
         if (connection != null) {
             connection.close();
+            System.out.println("Database disconnected");
         }
     }
 }

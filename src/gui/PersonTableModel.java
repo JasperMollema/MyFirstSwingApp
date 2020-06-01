@@ -12,6 +12,7 @@ public class PersonTableModel extends AbstractTableModel {
     public PersonTableModel() {
         formPersonList = new ArrayList<>();
     }
+
     @Override
     public int getRowCount() {
         return formPersonList.size();

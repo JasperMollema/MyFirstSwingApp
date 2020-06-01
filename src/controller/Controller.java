@@ -5,11 +5,14 @@ import model.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
     private Database database;
+    private boolean tableChanged;
+    private boolean personsDeleted;
 
     public Controller() {
         database = new Database();
@@ -27,6 +30,7 @@ public class Controller {
         );
 
         database.addPerson(person);
+        tableChanged = true;
     }
 
     public List<FormPerson> getPersonList() {
@@ -38,6 +42,23 @@ public class Controller {
         }
 
         return formPersonList;
+    }
+
+    public void save() throws SQLException {
+        database.save();
+    }
+
+    public boolean load() throws SQLException {
+        database.load();
+        return !database.getPersonList().isEmpty();
+    }
+
+    public void connectToDatabase() throws SQLException {
+        database.connect();
+    }
+
+    public void disconnectDatabase() throws SQLException {
+        database.disconnect();
     }
 
     public void savePersonsToFile(File file) throws IOException {
@@ -68,6 +89,8 @@ public class Controller {
 
     public void deletePerson(int row) {
         database.deletePerson(row);
+        tableChanged = true;
+        personsDeleted = true;
     }
 
     private String fillMaritalStatus(MaritalStatus maritalStatus) {
@@ -124,5 +147,13 @@ public class Controller {
             case "female" : return Gender.FEMALE;
             default: return null;
         }
+    }
+
+    public boolean isTableChanged() {
+        return tableChanged;
+    }
+
+    public boolean arePersonsDeleted() {
+        return personsDeleted;
     }
 }
