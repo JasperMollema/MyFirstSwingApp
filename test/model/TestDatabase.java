@@ -9,14 +9,13 @@ public class TestDatabase {
 
     @Test
     void testConnect() throws Exception{
-        Database database = new Database();
+        PersonSearchList personSearchList = new PersonSearchList();
 
-        database.addPerson(new Person("Jasper", "Software Engineer", AgeCategory.ADULT, MaritalStatus.COHABITING, false, null, Gender.MALE));
-        database.addPerson(new Person("Sara", "Student", AgeCategory.ADULT, MaritalStatus.COHABITING, false, null, Gender.FEMALE));
+        personSearchList.addPerson(new Person(1,"Jasper", "Software Engineer", AgeCategory.ADULT, MaritalStatus.COHABITING, false, null, Gender.MALE));
+        personSearchList.addPerson(new Person(2,"Sara", "Student", AgeCategory.ADULT, MaritalStatus.COHABITING, false, null, Gender.FEMALE));
 
-        database.connect();
-        database.save();
-        database.load();
+        personSearchList.savePersons();
+        personSearchList.retrievePersons();
 
         assertTrue(true);
     }

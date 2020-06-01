@@ -7,11 +7,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Database {
-    private List<Person> personList;
     private String connectUrl = "jdbc:mariadb://localhost:3306/swingtest";
     private Connection connection;
-    private Statement statement;
-    private ResultSet resultSet;
+    protected ResultSet resultSet;
+    private List<Person> personList;
+
 
     public Database() {
         personList = new LinkedList<>();
@@ -157,38 +157,5 @@ public class Database {
         updateStatement.close();
     }
 
-    public void connect() throws SQLException {
-        // Try with resources:
-//        try(Connection connection = DriverManager.getConnection(connectUrl, "root", "jasper");
-//            Statement statement = connection.createStatement();
-//            ResultSet resultSet = statement.executeQuery("select * from books")) {
-//        }
-//
-//        catch (SQLException exception) {
-//            System.out.println(exception.getMessage());
-//            System.out.println(exception.getSQLState());
-//            System.out.println(exception.getErrorCode());
-//        }
 
-        // Following tutorial:
-        try {
-            connection = DriverManager.getConnection(connectUrl, "root", "jasper");
-            statement = connection.createStatement();
-            resultSet = statement.getResultSet();
-            System.out.println("Connected to database");
-        }
-
-        catch (SQLException exception) {
-            System.out.println(exception.getMessage());
-            System.out.println(exception.getSQLState());
-            System.out.println(exception.getErrorCode());
-        }
-    }
-
-    public void disconnect() throws SQLException{
-        if (connection != null) {
-            connection.close();
-            System.out.println("Database disconnected");
-        }
-    }
 }
