@@ -2,28 +2,36 @@ package model;
 
 import java.io.Serializable;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class Entity extends DatabaseAcces implements Serializable {
+public abstract class Entity implements Serializable {
     protected static final long serialVersionUID = 1L;
     protected String tableName;
+    protected DatabaseAcces database;
+    protected ResultSet result;
+
+    public Entity() {
+        database = new DatabaseAcces();
+    }
 
     public void save() throws SQLException {
-        connect();
+        database.connect();
         if (isNew()) {
             insert();
         }
         update();
-        disconnect();
+        database.disconnect();
     }
 
     public void retrieve(int id) throws SQLException {
-        connect();
+        database.connect();
         String retrieveSql = "select * from " + tableName + "where id = ?";
-        PreparedStatement retrieveStatement = createPreparedStatement(retrieveSql);
+        PreparedStatement retrieveStatement = database.createPreparedStatement(retrieveSql);
         retrieveStatement.setInt(1, id);
-        executeQuery(retrieveStatement);
-        disconnect();
+        database.executeQuery(retrieveStatement);
+        result = database.getResultSet();
+        database.disconnect();
     }
 
     protected Integer determineId() throws SQLException{
@@ -33,18 +41,19 @@ public abstract class Entity extends DatabaseAcces implements Serializable {
     }
 
     protected void insert() throws SQLException {
-        executeUpdate(createInsertStatement());
+        database.executeUpdate(createInsertStatement());
     }
 
     protected void update() throws SQLException {
-        executeUpdate(createUpdateStatement());
+        database.executeUpdate(createUpdateStatement());
     }
 
     protected Integer findMaxId() throws SQLException {
         String findMaxId = "select max(id) from " + tableName;
-        executeQuery(createPreparedStatement(findMaxId));
-        resultSet.next();
-        return resultSet.getInt(1);
+        database.executeQuery(database.createPreparedStatement(findMaxId));
+        result = database.getResultSet();
+        result.next();
+        return result.getInt(1);
     }
 
     protected abstract PreparedStatement createInsertStatement() throws SQLException;

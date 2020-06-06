@@ -6,7 +6,7 @@ import java.sql.*;
  * This class is the parent class for all classes using the database. It's responsible for accessing the database.
  * Child classes can use this class to execute queries and use the resulting {@link ResultSet};
  * */
-public abstract class DatabaseAcces {
+public class DatabaseAcces {
     private String connectUrl = "jdbc:mariadb://localhost:3306/swingtest";
     private Connection connection;
     protected ResultSet resultSet;
@@ -90,5 +90,9 @@ public abstract class DatabaseAcces {
         System.out.println(sqlException.getMessage());
         System.out.println(sqlException.getSQLState());
         System.out.println(sqlException.getErrorCode());
+    }
+
+    public ResultSet getResultSet() {
+        return resultSet;
     }
 }

@@ -1,6 +1,6 @@
 package gui;
 
-import controller.Controller;
+import controller.PersonController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +17,7 @@ public class MainFrame extends JFrame {
     private JFileChooser fileChooser;
     private TablePanel tablePanel;
     private PreferenceDialog preferenceDialog;
-    private Controller controller;
+    private PersonController personController;
     private Preferences preferences;
 
     public MainFrame() {
@@ -31,7 +31,7 @@ public class MainFrame extends JFrame {
         formPanel = new FormPanel();
         tablePanel = new TablePanel();
         preferenceDialog = new PreferenceDialog(this);
-        controller = new Controller();
+        personController = new PersonController();
         fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
         preferences = Preferences.userRoot().node("db");
@@ -57,7 +57,7 @@ public class MainFrame extends JFrame {
         toolbar.setToolbarListener(new ToolbarListener() {
             @Override
             public void saveEventOccurred() {
-                if (!controller.isTableChanged()) {
+                if (!personController.isTableChanged()) {
                     JOptionPane.showMessageDialog(
                             MainFrame.this,
                             "There ar no changes to save",
@@ -66,7 +66,7 @@ public class MainFrame extends JFrame {
                     );
                 }
 
-                if (controller.arePersonsDeleted()) {
+                if (personController.arePersonsDeleted()) {
                     int action = JOptionPane.showConfirmDialog(
                             MainFrame.this,
                             "You have deleted person, are you sure you want to save these changes?",
@@ -77,10 +77,9 @@ public class MainFrame extends JFrame {
                         return;
                     }
                 }
-                connect();
 
                 try {
-                    controller.save();
+                    personController.save();
                 } catch (SQLException exception) {
                     JOptionPane.showMessageDialog(
                             MainFrame.this,
@@ -88,14 +87,14 @@ public class MainFrame extends JFrame {
                             "Database Connection Problem",
                             JOptionPane.ERROR_MESSAGE);
                 }
+                tablePanel.refresh();
             }
 
             @Override
             public void loadEventOccurred() {
-                connect();
 
                 try {
-                    if (!controller.load()) {
+                    if (!personController.load()) {
                         JOptionPane.showMessageDialog(
                                 MainFrame.this,
                                 "There are no persons to load",
@@ -112,29 +111,17 @@ public class MainFrame extends JFrame {
                             JOptionPane.ERROR_MESSAGE);
                 }
 
-                tablePanel.fillTable(controller.getPersonList());
+                tablePanel.fillTable(personController.getFormPersonList());
                 tablePanel.refresh();
             }
         });
     }
 
-    private void connect() {
-        try {
-            controller.connectToDatabase();
-        } catch (SQLException exception) {
-            JOptionPane.showMessageDialog(
-                    MainFrame.this,
-                    "Cannot connect to database" ,
-                    "Database Connection Problem",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     private void addTableListener() {
         tablePanel.setPersonTableListener(
                 row -> {
-                    controller.deletePerson(row);
-                    tablePanel.fillTable(controller.getPersonList());
+                    personController.deletePerson(row);
+                    tablePanel.fillTable(personController.getFormPersonList());
                     tablePanel.refresh();
                 });
     }
@@ -156,8 +143,8 @@ public class MainFrame extends JFrame {
                             + gender + "\n\n"
             );
 
-            controller.addPerson(createFormPerson(formEvent));
-            tablePanel.fillTable(controller.getPersonList());
+            personController.addPerson(createFormPerson(formEvent));
+            tablePanel.fillTable(personController.getFormPersonList());
             tablePanel.refresh();
         });
     }
@@ -236,7 +223,7 @@ public class MainFrame extends JFrame {
                 event -> {
                     if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
                         try {
-                            tablePanel.fillTable(controller.loadFromFile(fileChooser.getSelectedFile()));
+                            tablePanel.fillTable(personController.loadFromFile(fileChooser.getSelectedFile()));
                             tablePanel.refresh();
                         } catch (IOException | ClassNotFoundException e) {
                             JOptionPane.showMessageDialog(
@@ -253,7 +240,7 @@ public class MainFrame extends JFrame {
                 event -> {
                     if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
                         try {
-                            controller.savePersonsToFile(fileChooser.getSelectedFile());
+                            personController.savePersonsToFile(fileChooser.getSelectedFile());
                         } catch (IOException e) {
                             JOptionPane.showMessageDialog(
                                     MainFrame.this,

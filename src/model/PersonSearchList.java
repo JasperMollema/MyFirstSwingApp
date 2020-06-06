@@ -8,6 +8,7 @@ import java.util.List;
 
 public class PersonSearchList extends SearchList {
     private List<Person> personList;
+    private List<Person> deletedPersons;
 
     private static final String ID_COLUMN = "id";
     private static final String NAME_COLUMN = "name";
@@ -20,11 +21,34 @@ public class PersonSearchList extends SearchList {
 
     public PersonSearchList() {
         personList = new ArrayList<>();
+        deletedPersons = new ArrayList<>();
         this.tableName = "person";
     }
 
+    public void addPerson(Person person) {
+        personList.add(person);
+    }
 
-    public List<Person> findPersons() throws SQLException {
+    public void deletePerson(int index) {
+        Person person = personList.get(index);
+        personList.remove(index);
+        deletedPersons.add(person);
+    }
+
+    public void save() throws SQLException {
+        for (Person person : personList) {
+            person.save();
+        }
+
+        for (Person person : deletedPersons) {
+            delete(person.getId());
+        }
+
+        personList.clear();
+        deletedPersons.clear();
+    }
+
+    public void findPersons() throws SQLException {
         connect();
         find();
 
@@ -46,7 +70,6 @@ public class PersonSearchList extends SearchList {
 
         resultSet.close();
         disconnect();
-        return Collections.unmodifiableList(personList);
     }
 
     public String translateIdToName (Integer id) throws SQLException {
@@ -65,5 +88,9 @@ public class PersonSearchList extends SearchList {
         }
 
         return resultSet.getString(NAME_COLUMN);
+    }
+
+    public List<Person> getResult() {
+        return Collections.unmodifiableList(personList);
     }
 }

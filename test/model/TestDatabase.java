@@ -18,8 +18,8 @@ public class TestDatabase {
         new Person("Jasper", "Software Engineer", AgeCategory.ADULT, MaritalStatus.COHABITING, false, null, Gender.MALE).save();
         new Person("Sara", "Student", AgeCategory.ADULT, MaritalStatus.COHABITING, false, null, Gender.FEMALE).save();
 
-
-        List<Person> personList = personSearchList.findPersons();
+        personSearchList.findPersons();
+        List<Person> personList = personSearchList.getResult();
 
         for (Person person : personList) {
             String name = personSearchList.translateIdToName(person.getId());

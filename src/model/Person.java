@@ -26,6 +26,7 @@ public class Person extends Entity {
     private static final String GENDER_COLUMN = "gender";
 
     public Person() {
+        super();
         tableName = "person";
     }
 
@@ -57,19 +58,19 @@ public class Person extends Entity {
     @Override
     public void retrieve(int id) throws SQLException {
         super.retrieve(id);
-        if (!resultSet.next()) {
+        if (!result.next()) {
             return;
         }
 
-        name = resultSet.getString(NAME_COLUMN);
-        occupation = resultSet.getString(OCCUPATION_COLUMN);
-        ageCategory = AgeCategory.valueOf(resultSet.getString(AGE_CATEGORY_COLUMN));
-        maritalStatus = MaritalStatus.valueOf(resultSet.getString(MARITAL_STATUS_COLUMN));
-        isClubMember = Utils.convertIntToBoolean(resultSet.getInt(IS_CLUB_MEMBER_COLUMN));
-        memberID = resultSet.getString(MEMBER_ID_COLUMN);
-        gender = Gender.valueOf(resultSet.getString(GENDER_COLUMN));
+        name = result.getString(NAME_COLUMN);
+        occupation = result.getString(OCCUPATION_COLUMN);
+        ageCategory = AgeCategory.valueOf(result.getString(AGE_CATEGORY_COLUMN));
+        maritalStatus = MaritalStatus.valueOf(result.getString(MARITAL_STATUS_COLUMN));
+        isClubMember = Utils.convertIntToBoolean(result.getInt(IS_CLUB_MEMBER_COLUMN));
+        memberID = result.getString(MEMBER_ID_COLUMN);
+        gender = Gender.valueOf(result.getString(GENDER_COLUMN));
 
-        resultSet.close();
+        result.close();
     }
 
     @Override
@@ -87,7 +88,7 @@ public class Person extends Entity {
                 "values" +
                 "(?, ?, ?, ?, ?, ?, ?, ?)";
 
-        PreparedStatement insertStatement = createPreparedStatement(insertSql);
+        PreparedStatement insertStatement = database.createPreparedStatement(insertSql);
         int column = 1;
 
         if (id == null) {
@@ -119,7 +120,7 @@ public class Person extends Entity {
                         "gender=? " +
                         "where id=?";
 
-        PreparedStatement updateStatement = createPreparedStatement(updateSql);
+        PreparedStatement updateStatement = database.createPreparedStatement(updateSql);
         int column = 1;
 
         updateStatement.setString(column++, name);
