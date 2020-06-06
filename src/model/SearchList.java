@@ -1,84 +1,32 @@
 package model;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
-public abstract class SearchList {
-    private String connectUrl = "jdbc:mariadb://localhost:3306/swingtest";
-    private Connection connection;
-    protected ResultSet resultSet;
+public class SearchList extends DatabaseAcces{
+    protected String tableName;
 
-    protected void executeUpdate(PreparedStatement updateStatement) throws SQLException {
-        System.out.println("Going to execute " + updateStatement);
-
-        int result = updateStatement.executeUpdate();
-        System.out.println("Rows affected : " + result);
-    }
-
-    protected void executeQuery(PreparedStatement selectStatement) throws SQLException {
-        System.out.println("Going to execute " + selectStatement);
+    public void find() throws SQLException {
+        PreparedStatement selectStatement = createPreparedStatement(
+                "select * from " + tableName);
 
         resultSet = selectStatement.executeQuery();
-        System.out.println("Query succeeded");
     }
 
-    protected void retrieve(String tableName) throws SQLException {
-
-        PreparedStatement selectStatement = connection.prepareStatement(
-                "select * from " + tableName + ";");
-
-        resultSet = selectStatement.executeQuery();
-
-        selectStatement.close();
+    public void delete() throws SQLException {
+        connect();
+        PreparedStatement deleteStatement = createPreparedStatement(
+                "delete from " + tableName);
+        executeUpdate(deleteStatement);
+        disconnect();
     }
 
-    protected PreparedStatement createPreparedStatement(String sqlString) throws SQLException{
-        return connection.prepareStatement(sqlString);
-    }
-
-    protected boolean connect() {
-        // Try with resources:
-//        try(Connection connection = DriverManager.getConnection(connectUrl, "root", "jasper");
-//            Statement statement = connection.createStatement();
-//            ResultSet resultSet = statement.executeQuery("select * from books")) {
-//        }
-//
-//        catch (SQLException exception) {
-//            System.out.println(exception.getMessage());
-//            System.out.println(exception.getSQLState());
-//            System.out.println(exception.getErrorCode());
-//        }
-
-        // Following tutorial:
-        try {
-            connection = DriverManager.getConnection(connectUrl, "root", "jasper");
-        }
-
-        catch (SQLException exception) {
-            printSQLException(exception);
-            return false;
-        }
-
-        System.out.println("Connected to database");
-        return true;
-    }
-
-    protected boolean disconnect() {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException exception) {
-                printSQLException(exception);
-                return false;
-            }
-        }
-
-        System.out.println("Database disconnected");
-        return true;
-    }
-
-    private void printSQLException(SQLException sqlException) {
-        System.out.println(sqlException.getMessage());
-        System.out.println(sqlException.getSQLState());
-        System.out.println(sqlException.getErrorCode());
+    public void delete(int id) throws SQLException {
+        connect();
+        PreparedStatement deleteStatement = createPreparedStatement(
+                "delete from " + tableName + " where id = ?");
+        deleteStatement.setInt(1, id);
+        executeUpdate(deleteStatement);
+        disconnect();
     }
 }

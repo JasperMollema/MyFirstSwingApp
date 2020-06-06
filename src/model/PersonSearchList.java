@@ -6,9 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PersonSearchList extends SearchList{
+public class PersonSearchList extends SearchList {
     private List<Person> personList;
-    private static final String TABLE_NAME = "person";
 
     private static final String ID_COLUMN = "id";
     private static final String NAME_COLUMN = "name";
@@ -21,36 +20,16 @@ public class PersonSearchList extends SearchList{
 
     public PersonSearchList() {
         personList = new ArrayList<>();
+        this.tableName = "person";
     }
 
-    public void addPerson(Person person) {
-        personList.add(person);
-    }
 
-    public void savePersons () throws SQLException {
+    public List<Person> findPersons() throws SQLException {
         connect();
-
-        for (Person person : personList) {
-            if (personExists(person.getId())) {
-                updatePerson(person);
-            }
-
-            else {
-                insertPerson(person);
-            }
-        }
-
-        disconnect();
-    }
-
-    public List<Person> retrievePersons() throws SQLException {
-        connect();
-        personList.clear();
-
-        retrieve(TABLE_NAME);
+        find();
 
         while (resultSet.next()) {
-            int id = resultSet.getInt(ID_COLUMN);
+            Integer id = resultSet.getInt(ID_COLUMN);
             String name = resultSet.getString(NAME_COLUMN);
             String occupation = resultSet.getString(OCCUPATION_COLUMN);
             String ageCategory = resultSet.getString(AGE_CATEGORY_COLUMN);
@@ -59,89 +38,32 @@ public class PersonSearchList extends SearchList{
             String memberId = resultSet.getString(MEMBER_ID_COLUMN);
             String gender = resultSet.getString(GENDER_COLUMN);
 
-            personList.add(new Person(id, name, occupation, AgeCategory.getAgeCategory(ageCategory),
+            Person person = new Person(id, name, occupation, AgeCategory.getAgeCategory(ageCategory),
                     MaritalStatus.getMaritalStatus(maritalStatus), Utils.convertIntToBoolean(isClubMember),
-                    memberId, Gender.getGender(gender)));
+                    memberId, Gender.getGender(gender));
+            personList.add(person);
         }
 
         resultSet.close();
         disconnect();
-
         return Collections.unmodifiableList(personList);
     }
 
-    private boolean personExists(int id) throws SQLException {
-        String selectSql = "select * from " + TABLE_NAME + " where id =?";
-        PreparedStatement selectStatement = createPreparedStatement(selectSql);
+    public String translateIdToName (Integer id) throws SQLException {
+        if (id == null) {
+            return null;
+        }
 
+        String selectSql = "select * from " + tableName + " where id =?";
+        PreparedStatement selectStatement = createPreparedStatement(selectSql);
         selectStatement.setInt(1, id);
 
         executeQuery(selectStatement);
-        boolean personExists = resultSet.next();
 
-        selectStatement.close();
-        resultSet.close();
+        if (!resultSet.next()) {
+            return null;
+        }
 
-        return personExists;
-    }
-
-    private void updatePerson(Person person) throws SQLException {
-        System.out.println("Updating person with ID " + person.getId());
-        String updateSql =
-                "update person set " +
-                "name=?, " +
-                "occupation=?, " +
-                "age_category=?, " +
-                "marital_status=?, " +
-                "is_club_member=?, " +
-                "member_id=?, " +
-                "gender=? " +
-                "where id=?";
-
-        PreparedStatement updateStatement = createPreparedStatement(updateSql);
-        int column = 1;
-
-        updateStatement.setString(column++, person.getName());
-        updateStatement.setString(column++, person.getOccupation());
-        updateStatement.setString(column++, person.getAgeCategory().name());
-        updateStatement.setString(column++, person.getMaritalStatus().name());
-        updateStatement.setInt(column++, Utils.convertBooleanToInteger(person.getIsClubMember()));
-        updateStatement.setString(column++, person.getMemberID());
-        updateStatement.setString(column++, person.getGender().name());
-        updateStatement.setInt(column++, person.getId());
-
-        executeUpdate(updateStatement);
-        updateStatement.close();
-    }
-
-    private void insertPerson(Person person) throws SQLException {
-        System.out.println("Going to insert person with ID " + person.getId());
-
-        String insertSql = "insert into " + TABLE_NAME +
-                "(id, " +
-                "name, " +
-                "occupation, " +
-                "age_category, " +
-                "marital_status, " +
-                "is_club_member, " +
-                "member_id, " +
-                "gender) " +
-                "values" +
-                "(?, ?, ?, ?, ?, ?, ?, ?)";
-
-        PreparedStatement insertStatement = createPreparedStatement(insertSql);
-        int column = 1;
-
-        insertStatement.setInt(column++, person.getId());
-        insertStatement.setString(column++, person.getName());
-        insertStatement.setString(column++, person.getOccupation());
-        insertStatement.setString(column++, person.getAgeCategory().name());
-        insertStatement.setString(column++, person.getMaritalStatus().name());
-        insertStatement.setInt(column++, Utils.convertBooleanToInteger(person.getIsClubMember()));
-        insertStatement.setString(column++, person.getMemberID());
-        insertStatement.setString(column++, person.getGender().name());
-
-        executeUpdate(insertStatement);
-        insertStatement.close();
+        return resultSet.getString(NAME_COLUMN);
     }
 }

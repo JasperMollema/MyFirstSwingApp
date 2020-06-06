@@ -77,7 +77,7 @@ public class Database {
             String memberId = resultSet.getString("member_id");
             String gender = resultSet.getString("gender");
 
-            personList.add(new Person(id, name, occupation, AgeCategory.getAgeCategory(ageCategory),
+            personList.add(new Person( name, occupation, AgeCategory.getAgeCategory(ageCategory),
                     MaritalStatus.getMaritalStatus(maritalStatus), Utils.convertIntToBoolean(isClubMember),
                     memberId, Gender.getGender(gender)));
         }
@@ -156,6 +156,4 @@ public class Database {
         insertStatement.close();
         updateStatement.close();
     }
-
-
 }

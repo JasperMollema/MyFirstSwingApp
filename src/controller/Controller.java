@@ -56,9 +56,6 @@ public class Controller {
     public void connectToDatabase() throws SQLException {
     }
 
-    public void disconnectDatabase() throws SQLException {
-    }
-
     public void savePersonsToFile(File file) throws IOException {
         database.savePersonsToFile(file);
     }

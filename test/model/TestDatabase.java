@@ -2,6 +2,8 @@ package model;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestDatabase {
@@ -9,13 +11,34 @@ public class TestDatabase {
 
     @Test
     void testConnect() throws Exception{
+
         PersonSearchList personSearchList = new PersonSearchList();
+        personSearchList.delete();
 
-        personSearchList.addPerson(new Person(1,"Jasper", "Software Engineer", AgeCategory.ADULT, MaritalStatus.COHABITING, false, null, Gender.MALE));
-        personSearchList.addPerson(new Person(2,"Sara", "Student", AgeCategory.ADULT, MaritalStatus.COHABITING, false, null, Gender.FEMALE));
+        new Person("Jasper", "Software Engineer", AgeCategory.ADULT, MaritalStatus.COHABITING, false, null, Gender.MALE).save();
+        new Person("Sara", "Student", AgeCategory.ADULT, MaritalStatus.COHABITING, false, null, Gender.FEMALE).save();
 
-        personSearchList.savePersons();
-        personSearchList.retrievePersons();
+
+        List<Person> personList = personSearchList.findPersons();
+
+        for (Person person : personList) {
+            String name = personSearchList.translateIdToName(person.getId());
+            System.out.println(name);
+        }
+
+        personSearchList.delete(1);
+
+        for (Person person : personList) {
+            String name = personSearchList.translateIdToName(person.getId());
+            System.out.println(name);
+        }
+
+        personSearchList.delete();
+
+        for (Person person : personList) {
+            String name = personSearchList.translateIdToName(person.getId());
+            System.out.println(name);
+        }
 
         assertTrue(true);
     }
