@@ -1,5 +1,7 @@
 package model;
 
+import utils.Utils;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class PersonSearchList extends SearchList {
     private static final String GENDER_COLUMN = "gender";
 
     public PersonSearchList() {
+        super();
         personList = new ArrayList<>();
         deletedPersons = new ArrayList<>();
         this.tableName = "person";
@@ -49,27 +52,25 @@ public class PersonSearchList extends SearchList {
     }
 
     public void findPersons() throws SQLException {
-        connect();
         find();
 
-        while (resultSet.next()) {
-            Integer id = resultSet.getInt(ID_COLUMN);
-            String name = resultSet.getString(NAME_COLUMN);
-            String occupation = resultSet.getString(OCCUPATION_COLUMN);
-            String ageCategory = resultSet.getString(AGE_CATEGORY_COLUMN);
-            String maritalStatus = resultSet.getString(MARITAL_STATUS_COLUMN);
-            int isClubMember = resultSet.getInt(IS_CLUB_MEMBER_COLUMN);
-            String memberId = resultSet.getString(MEMBER_ID_COLUMN);
-            String gender = resultSet.getString(GENDER_COLUMN);
+        while (result.next()) {
+            Integer id = result.getInt(ID_COLUMN);
+            String name = result.getString(NAME_COLUMN);
+            String occupation = result.getString(OCCUPATION_COLUMN);
+            String ageCategory = result.getString(AGE_CATEGORY_COLUMN);
+            String maritalStatus = result.getString(MARITAL_STATUS_COLUMN);
+            int isClubMember = result.getInt(IS_CLUB_MEMBER_COLUMN);
+            String memberId = result.getString(MEMBER_ID_COLUMN);
+            String gender = result.getString(GENDER_COLUMN);
 
             Person person = new Person(id, name, occupation, AgeCategory.getAgeCategory(ageCategory),
-                    MaritalStatus.getMaritalStatus(maritalStatus), Utils.convertIntToBoolean(isClubMember),
+                    MaritalStatus.getMaritalStatus(maritalStatus), Utils.integerToBoolean(isClubMember),
                     memberId, Gender.getGender(gender));
             personList.add(person);
         }
 
-        resultSet.close();
-        disconnect();
+        result.close();
     }
 
     public String translateIdToName (Integer id) throws SQLException {
@@ -78,16 +79,16 @@ public class PersonSearchList extends SearchList {
         }
 
         String selectSql = "select * from " + tableName + " where id =?";
-        PreparedStatement selectStatement = createPreparedStatement(selectSql);
+        PreparedStatement selectStatement = database.createPreparedStatement(selectSql);
         selectStatement.setInt(1, id);
 
-        executeQuery(selectStatement);
+        database.executeQuery(selectStatement);
 
-        if (!resultSet.next()) {
+        if (!result.next()) {
             return null;
         }
 
-        return resultSet.getString(NAME_COLUMN);
+        return result.getString(NAME_COLUMN);
     }
 
     public List<Person> getResult() {

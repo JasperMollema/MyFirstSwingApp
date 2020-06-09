@@ -8,8 +8,16 @@ import java.sql.*;
  * */
 public class DatabaseAcces {
     private String connectUrl = "jdbc:mariadb://localhost:3306/swingtest";
-    private Connection connection;
+    private static Connection connection;
     protected ResultSet resultSet;
+
+    public DatabaseAcces() {
+        try {
+            connect();
+        } catch (SQLException sqlException) {
+            printSQLException(sqlException);
+        }
+    }
 
     protected void executeUpdate(PreparedStatement updateStatement) throws SQLException {
         System.out.println("Going to execute " + updateStatement);
@@ -44,7 +52,6 @@ public class DatabaseAcces {
 
     protected PreparedStatement createPreparedStatement(String sqlString) throws SQLException {
         try {
-            connect();
             return connection.prepareStatement(sqlString);
         }
 
@@ -54,7 +61,7 @@ public class DatabaseAcces {
         }
     }
 
-    protected void connect() throws SQLException {
+    public void connect() throws SQLException {
         if (connection != null) {
             return;
         }
@@ -70,11 +77,12 @@ public class DatabaseAcces {
         System.out.println("Connected to database");
     }
 
-    protected void disconnect() throws SQLException {
+    public void disconnect() throws SQLException {
         if (connection != null) {
             try {
                 connection.close();
                 connection = null;
+                System.out.println("Database disconnected");
             }
 
             catch (SQLException sqlException) {
@@ -82,8 +90,6 @@ public class DatabaseAcces {
                 throw  sqlException;
             }
         }
-
-        System.out.println("Database disconnected");
     }
 
     private void printSQLException(SQLException sqlException) {

@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.prefs.Preferences;
@@ -36,6 +38,13 @@ public class MainFrame extends JFrame {
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
         preferences = Preferences.userRoot().node("db");
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                exitApplication();
+            }
+        });
+
         addTableListener();
         addToolbarListener();
         addFormListener();
@@ -49,8 +58,26 @@ public class MainFrame extends JFrame {
 
         setSize(600, 500);
         setMinimumSize(new Dimension(500, 400));
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setVisible(true);
+    }
+
+    private void exitApplication() {
+        int action = JOptionPane.showConfirmDialog(
+                MainFrame.this,
+                "Do you really want to exit?",
+                "Confirm exit",
+                JOptionPane.OK_CANCEL_OPTION);
+
+        if (action == JOptionPane.OK_OPTION){
+            dispose(); // Quits automatically.
+            try {
+                personController.disconnectDatabase();
+            } catch (SQLException sqlException) {
+                sqlException.printStackTrace();
+            }
+            System.out.println("Window closing");
+        }
     }
 
     private void addToolbarListener() {
@@ -260,17 +287,7 @@ public class MainFrame extends JFrame {
         );
 
         exitItem.addActionListener(
-                event -> {
-                    int action = JOptionPane.showConfirmDialog(
-                            MainFrame.this,
-                            "Do you really want to exit?",
-                            "Confirm exit",
-                            JOptionPane.OK_CANCEL_OPTION);
-
-                    if (action == JOptionPane.OK_OPTION){
-                        System.exit(0);
-                    }
-                }
+                event -> exitApplication()
         );
 
         // Mnemonics

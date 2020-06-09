@@ -16,22 +16,18 @@ public abstract class Entity implements Serializable {
     }
 
     public void save() throws SQLException {
-        database.connect();
         if (isNew()) {
             insert();
         }
         update();
-        database.disconnect();
     }
 
     public void retrieve(int id) throws SQLException {
-        database.connect();
         String retrieveSql = "select * from " + tableName + "where id = ?";
         PreparedStatement retrieveStatement = database.createPreparedStatement(retrieveSql);
         retrieveStatement.setInt(1, id);
         database.executeQuery(retrieveStatement);
         result = database.getResultSet();
-        database.disconnect();
     }
 
     protected Integer determineId() throws SQLException{

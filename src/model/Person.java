@@ -1,5 +1,7 @@
 package model;
 
+import utils.Utils;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -66,7 +68,7 @@ public class Person extends Entity {
         occupation = result.getString(OCCUPATION_COLUMN);
         ageCategory = AgeCategory.valueOf(result.getString(AGE_CATEGORY_COLUMN));
         maritalStatus = MaritalStatus.valueOf(result.getString(MARITAL_STATUS_COLUMN));
-        isClubMember = Utils.convertIntToBoolean(result.getInt(IS_CLUB_MEMBER_COLUMN));
+        isClubMember = Utils.integerToBoolean(result.getInt(IS_CLUB_MEMBER_COLUMN));
         memberID = result.getString(MEMBER_ID_COLUMN);
         gender = Gender.valueOf(result.getString(GENDER_COLUMN));
 
@@ -100,7 +102,7 @@ public class Person extends Entity {
         insertStatement.setString(column++, occupation);
         insertStatement.setString(column++, ageCategory.name());
         insertStatement.setString(column++, maritalStatus.name());
-        insertStatement.setInt(column++, Utils.convertBooleanToInteger(isClubMember));
+        insertStatement.setInt(column++, Utils.booleanToInteger(isClubMember));
         insertStatement.setString(column++, memberID);
         insertStatement.setString(column++, gender.name());
 
@@ -127,7 +129,7 @@ public class Person extends Entity {
         updateStatement.setString(column++, occupation);
         updateStatement.setString(column++, ageCategory.name());
         updateStatement.setString(column++, maritalStatus.name());
-        updateStatement.setInt(column++, Utils.convertBooleanToInteger(isClubMember));
+        updateStatement.setInt(column++, Utils.booleanToInteger(isClubMember));
         updateStatement.setString(column++, memberID);
         updateStatement.setString(column++, gender.name());
         updateStatement.setInt(column++, id);

@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PersonTableModel extends AbstractTableModel {
     List<FormPerson> formPersonList;
-    private String[] columnNames = {"Id", "Name", "Occupation","Age Category",
+    private String[] columnNames = {"Name", "Occupation","Age Category",
             "Marital Status", "Gender", "Club Member", "Member Id"};
 
     public PersonTableModel() {

@@ -22,6 +22,14 @@ public class PersonController {
         personList = new ArrayList<>();
     }
 
+    public void connectToDatabase() throws SQLException {
+        new DatabaseAcces().connect();
+    }
+
+    public void disconnectDatabase() throws SQLException {
+        new DatabaseAcces().disconnect();
+    }
+
     public void addPerson(FormPerson formPerson) {
         Person person = new Person(
                 formPerson.name,
@@ -83,7 +91,6 @@ public class PersonController {
     private FormPerson fillFormPerson(Person person) {
         FormPerson formPerson = new FormPerson();
 
-        formPerson.id = person.getId();
         formPerson.name = person.getName();
         formPerson.occupation = person.getOccupation();
         formPerson.ageCategory = fillAgeCategory(person.getAgeCategory());

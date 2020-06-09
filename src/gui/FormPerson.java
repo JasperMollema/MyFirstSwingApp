@@ -1,9 +1,8 @@
 package gui;
 
 public class FormPerson {
-    public static final int COLUMN_COUNT = 8;
+    public static final int COLUMN_COUNT = 7;
 
-    public Integer id;
     public String name;
     public String occupation;
     public Integer ageCategory;
@@ -14,14 +13,13 @@ public class FormPerson {
 
     public Object getValue(int fieldId) {
         switch (fieldId) {
-            case 0 : return id;
-            case 1 : return name;
-            case 2 : return occupation;
-            case 3 : return ageCategory;
-            case 4 : return maritalStatus;
-            case 5 : return gender;
-            case 6 : return isClubMember;
-            case 7 : return memberId;
+            case 0 : return name;
+            case 1 : return occupation;
+            case 2 : return ageCategory;
+            case 3 : return maritalStatus;
+            case 4 : return gender;
+            case 5 : return isClubMember;
+            case 6 : return memberId;
             default: return null;
         }
     }
