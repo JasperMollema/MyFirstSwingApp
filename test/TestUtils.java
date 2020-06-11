@@ -11,4 +11,19 @@ public class TestUtils {
         assertEquals("file", Utils.getFileExtension(file));
     }
 
+    @Test
+    void testIntegerToBoolean() {
+        Integer testNull = null;
+        Integer testTrue = 1;
+        Integer testFalse = 0;
+        Integer testInvalid = -4;
+        Integer testInvalid1 = 23;
+
+        assertEquals(null, utils.Utils.integerToBoolean(testNull));
+        assertEquals(true, utils.Utils.integerToBoolean(testTrue));
+        assertEquals(false, utils.Utils.integerToBoolean(testFalse));
+        assertEquals(null, utils.Utils.integerToBoolean(testInvalid));
+        assertEquals(null, utils.Utils.integerToBoolean(testInvalid1));
+
+    }
 }

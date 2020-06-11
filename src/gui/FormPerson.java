@@ -8,7 +8,7 @@ public class FormPerson {
     public Integer ageCategory;
     public String maritalStatus;
     public String gender;
-    public Boolean isClubMember;
+    public String isClubMember;
     public String memberId;
 
     public Object getValue(int fieldId) {

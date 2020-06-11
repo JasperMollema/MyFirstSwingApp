@@ -5,7 +5,7 @@ public class Utils {
     private static final String NO = "no";
 
     public static Boolean integerToBoolean(Integer integer) {
-        if (integer == null || integer !=1 || integer != 0) {
+        if (integer == null || integer !=1 && integer != 0) {
             return null;
         }
         return integer == 1;

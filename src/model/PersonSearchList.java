@@ -52,6 +52,7 @@ public class PersonSearchList extends SearchList {
     }
 
     public void findPersons() throws SQLException {
+        personList.clear();
         find();
 
         while (result.next()) {

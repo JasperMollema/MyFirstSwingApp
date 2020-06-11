@@ -1,6 +1,7 @@
 package gui;
 
 import controller.PersonController;
+import utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -212,7 +213,7 @@ public class MainFrame extends JFrame {
         formPerson.ageCategory = formEvent.getAgeCategory();
         formPerson.maritalStatus = formEvent.getMaritalStatus();
         formPerson.gender = formEvent.getGender();
-        formPerson.isClubMember = formEvent.isClubMember();
+        formPerson.isClubMember = Utils.booleanToString(formEvent.isClubMember());
         formPerson.memberId = formEvent.getMemberID();
 
         return formPerson;

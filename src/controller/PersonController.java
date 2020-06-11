@@ -2,6 +2,7 @@ package controller;
 
 import gui.FormPerson;
 import model.*;
+import utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,10 +23,6 @@ public class PersonController {
         personList = new ArrayList<>();
     }
 
-    public void connectToDatabase() throws SQLException {
-        new DatabaseAcces().connect();
-    }
-
     public void disconnectDatabase() throws SQLException {
         new DatabaseAcces().disconnect();
     }
@@ -36,7 +33,7 @@ public class PersonController {
                 formPerson.occupation,
                 determineAgeCategory(formPerson),
                 determineMaritalStatus(formPerson),
-                formPerson.isClubMember,
+                Utils.stringToBoolean(formPerson.isClubMember),
                 formPerson.memberId,
                 determineGender(formPerson)
         );
@@ -95,7 +92,7 @@ public class PersonController {
         formPerson.occupation = person.getOccupation();
         formPerson.ageCategory = fillAgeCategory(person.getAgeCategory());
         formPerson.maritalStatus = fillMaritalStatus(person.getMaritalStatus());
-        formPerson.isClubMember = person.getIsClubMember();
+        formPerson.isClubMember = Utils.booleanToString(person.getIsClubMember());
         formPerson.memberId = person.getMemberID();
         formPerson.gender = fillGender(person.getGender());
 
