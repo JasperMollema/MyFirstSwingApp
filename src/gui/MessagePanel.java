@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 
 public class MessagePanel extends JPanel {
@@ -10,6 +11,14 @@ public class MessagePanel extends JPanel {
     public MessagePanel() {
         serverTree = new JTree(createTree());
 
+        serverTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        serverTree.addTreeSelectionListener(
+                event -> {
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) serverTree.getLastSelectedPathComponent();
+                    Object userObject = node.getUserObject();
+                    System.out.println(userObject);
+                }
+        );
         setLayout(new BorderLayout());
 
         add(new JScrollPane(serverTree), BorderLayout.CENTER);
