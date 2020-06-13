@@ -22,6 +22,7 @@ public class MainFrame extends JFrame {
     private PreferenceDialog preferenceDialog;
     private PersonController personController;
     private Preferences preferences;
+    private JSplitPane splitPane;
 
     public MainFrame() {
         super("Hello World");
@@ -38,6 +39,7 @@ public class MainFrame extends JFrame {
         fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
         preferences = Preferences.userRoot().node("db");
+        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, tablePanel);
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -53,9 +55,8 @@ public class MainFrame extends JFrame {
 
         setDefaultsPreferenceDialogue();
 
-        add(formPanel, BorderLayout.WEST);
-        add(tablePanel, BorderLayout.CENTER);
         add(toolbar, BorderLayout.NORTH);
+        add(splitPane);
 
         setSize(600, 500);
         setMinimumSize(new Dimension(500, 400));
@@ -283,6 +284,12 @@ public class MainFrame extends JFrame {
         showFormItem.addActionListener(
                 event -> {
                     JCheckBoxMenuItem menuItem = (JCheckBoxMenuItem) event.getSource();
+
+                    if (menuItem.isSelected()) {
+                        int location = (int) formPanel.getMinimumSize().getWidth();
+                        // Use an int to get the pixel width and not the relative width of a double.
+                        splitPane.setDividerLocation(location);
+                    }
                     formPanel.setVisible(menuItem.isSelected());
                 }
         );

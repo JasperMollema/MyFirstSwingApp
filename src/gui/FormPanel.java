@@ -23,6 +23,7 @@ public class FormPanel extends JPanel {
         Dimension dimension = getPreferredSize();
         dimension.width = 250; // The layout manager does not respect the preferred height.
         setPreferredSize(dimension);
+        setMinimumSize(dimension);
 
         nameField = new JTextField(10);
         occupationField = new JTextField(10);
