@@ -23,6 +23,7 @@ public class MainFrame extends JFrame {
     private PersonController personController;
     private Preferences preferences;
     private JTabbedPane tabbedPane;
+    private MessagePanel messagePanel;
     private JSplitPane splitPane;
 
     public MainFrame() {
@@ -41,10 +42,11 @@ public class MainFrame extends JFrame {
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
         preferences = Preferences.userRoot().node("db");
         tabbedPane = new JTabbedPane();
+        messagePanel = new MessagePanel();
         splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, tabbedPane);
 
         tabbedPane.addTab("Person Database", tablePanel);
-        tabbedPane.addTab("Messages", textPanel);
+        tabbedPane.addTab("Messages", messagePanel);
 
         addWindowListener(new WindowAdapter() {
             @Override
