@@ -2,19 +2,15 @@ package gui;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 
 public class MessagePanel extends JPanel {
-    private DefaultTreeCellRenderer treeCellRenderer;
+    private ServerTreeCellRenderer treeCellRenderer;
     private JTree serverTree;
 
     public MessagePanel() {
-        treeCellRenderer = new DefaultTreeCellRenderer();
-        treeCellRenderer.setLeafIcon(Utils.createIcon("/images/Server16.gif"));
-        treeCellRenderer.setOpenIcon(Utils.createIcon("/images/WebComponent16.gif"));
-        treeCellRenderer.setClosedIcon(Utils.createIcon("/images/WebComponentAdd16.gif"));
+        treeCellRenderer = new ServerTreeCellRenderer();
 
         serverTree = new JTree(createTree());
         serverTree.setCellRenderer(treeCellRenderer);
@@ -36,9 +32,9 @@ public class MessagePanel extends JPanel {
 
         // Dutch servers.
         DefaultMutableTreeNode dutchBranch = new DefaultMutableTreeNode("Netherlands");
-        DefaultMutableTreeNode serverAmsterdam = new DefaultMutableTreeNode(new ServerInfo("Amsterdam", 0));
-        DefaultMutableTreeNode serverAlkmaar = new DefaultMutableTreeNode(new ServerInfo("Alkmaar", 1));
-        DefaultMutableTreeNode serverDenBosch = new DefaultMutableTreeNode(new ServerInfo("Den Bosch", 2));
+        DefaultMutableTreeNode serverAmsterdam = new DefaultMutableTreeNode(new ServerInfo("Amsterdam", 0,true));
+        DefaultMutableTreeNode serverAlkmaar = new DefaultMutableTreeNode(new ServerInfo("Alkmaar", 1, false));
+        DefaultMutableTreeNode serverDenBosch = new DefaultMutableTreeNode(new ServerInfo("Den Bosch", 2, false));
 
         dutchBranch.add(serverAmsterdam);
         dutchBranch.add(serverAlkmaar);
@@ -46,9 +42,9 @@ public class MessagePanel extends JPanel {
 
         // UK servers.
         DefaultMutableTreeNode UKBranch = new DefaultMutableTreeNode("UK");
-        DefaultMutableTreeNode serverLondon = new DefaultMutableTreeNode(new ServerInfo("London", 3));
-        DefaultMutableTreeNode serverBristol = new DefaultMutableTreeNode(new ServerInfo("Bristol", 4));
-        DefaultMutableTreeNode serverLeeds = new DefaultMutableTreeNode(new ServerInfo("Leeds", 5));
+        DefaultMutableTreeNode serverLondon = new DefaultMutableTreeNode(new ServerInfo("London", 3, false));
+        DefaultMutableTreeNode serverBristol = new DefaultMutableTreeNode(new ServerInfo("Bristol", 4, true));
+        DefaultMutableTreeNode serverLeeds = new DefaultMutableTreeNode(new ServerInfo("Leeds", 5, false));
 
         UKBranch.add(serverLondon);
         UKBranch.add(serverBristol);
@@ -61,17 +57,4 @@ public class MessagePanel extends JPanel {
     }
 }
 
-class ServerInfo {
-    private String name;
-    private int id;
 
-    public ServerInfo(String name, int id) {
-        this.name = name;
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-}
