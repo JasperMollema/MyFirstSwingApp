@@ -11,6 +11,9 @@ public class ServerInfo {
         this.checked = checked;
     }
 
+    public void update(boolean isSelected) {
+        checked = isSelected;
+    }
     @Override
     public String toString() {
         return name;

@@ -7,14 +7,19 @@ import java.awt.*;
 
 public class MessagePanel extends JPanel {
     private ServerTreeCellRenderer treeCellRenderer;
+    private ServerTreeCellEditor serverTreeCellEditor;
     private JTree serverTree;
 
     public MessagePanel() {
         treeCellRenderer = new ServerTreeCellRenderer();
+        serverTreeCellEditor = new ServerTreeCellEditor();
 
         serverTree = new JTree(createTree());
         serverTree.setCellRenderer(treeCellRenderer);
+        serverTree.setCellEditor(serverTreeCellEditor);
+        serverTree.setEditable(true);
         serverTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+
         serverTree.addTreeSelectionListener(
                 event -> {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) serverTree.getLastSelectedPathComponent();
