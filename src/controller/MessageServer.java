@@ -4,6 +4,7 @@ import gui.ServerInfo;
 import model.Message;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * This is a server simulator.
@@ -14,7 +15,7 @@ public class MessageServer implements Iterable<Message>{
 
     public MessageServer() {
         messages = new TreeMap<>();
-        selectedMessages = new ArrayList<>();
+        selectedMessages = new CopyOnWriteArrayList<>();
 
         // Amsterdam.
         List<Message> messageList = new ArrayList<>();
