@@ -89,7 +89,6 @@ class MessageIterator implements Iterator<Message> {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
         }
         return iterator.next();
     }
