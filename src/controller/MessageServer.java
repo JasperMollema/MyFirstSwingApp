@@ -87,7 +87,7 @@ class MessageIterator implements Iterator<Message> {
     @Override
     public Message next() {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(600);
         } catch (InterruptedException e) {
         }
         return iterator.next();

@@ -16,4 +16,12 @@ public class Message {
                 ", contents='" + contents + '\'' +
                 '}';
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContents() {
+        return contents;
+    }
 }

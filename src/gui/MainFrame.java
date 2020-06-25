@@ -21,7 +21,7 @@ public class MainFrame extends JFrame {
     private PreferenceDialog preferenceDialog;
     private PersonController personController;
     private Preferences preferences;
-    private JTabbedPane tabbedPane;
+    private JTabbedPane tabPane;
     private MessagePanel messagePanel;
     private JSplitPane splitPane;
 
@@ -39,12 +39,19 @@ public class MainFrame extends JFrame {
         fileChooser = new JFileChooser();
         fileChooser.addChoosableFileFilter(new PersonFileFilter());
         preferences = Preferences.userRoot().node("db");
-        tabbedPane = new JTabbedPane();
+        tabPane = new JTabbedPane();
         messagePanel = new MessagePanel(this);
-        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, tabbedPane);
+        splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, formPanel, tabPane);
 
-        tabbedPane.addTab("Person Database", tablePanel);
-        tabbedPane.addTab("Messages", messagePanel);
+        tabPane.addTab(TabOverview.TAB_PERSON_DATABASE_NAME, tablePanel);
+        tabPane.addTab(TabOverview.TAB_MESSAGES_NAME, messagePanel);
+
+        tabPane.addChangeListener(event -> {
+            int tabIndex = tabPane.getSelectedIndex();
+            if (tabIndex == TabOverview.TAB_MESSAGES_NR) {
+                messagePanel.refresh();
+            }
+        });
 
         addWindowListener(new WindowAdapter() {
             @Override

@@ -27,6 +27,7 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
     private JList messageList;
     private JSplitPane upperPane;
     private JSplitPane lowerPane;
+    private DefaultListModel messageListModel;
 
     public MessagePanel(JFrame parent) {
         treeCellRenderer = new ServerTreeCellRenderer();
@@ -41,6 +42,8 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
         serverTree.setCellEditor(serverTreeCellEditor);
         serverTree.setEditable(true);
         serverTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        messageServer.fillSelectedServers(selectedServers);
+        messageListModel = new DefaultListModel();
 
         serverTreeCellEditor.addCellEditorListener(new CellEditorListener() {
             @Override
@@ -69,12 +72,13 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 
             }
         });
+
         setLayout(new BorderLayout());
 
         textPanel = new TextPanel();
-        messageList = new JList();
+        messageList = new JList(messageListModel);
 
-        lowerPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, messageList, textPanel);
+        lowerPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(messageList), textPanel);
         upperPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(serverTree), lowerPane);
 
         textPanel.setMinimumSize(new Dimension(10, 100));
@@ -85,6 +89,17 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
         lowerPane.setResizeWeight(0.5);
 
         add(upperPane, BorderLayout.CENTER);
+    }
+
+    public void refresh() {
+        retrieveMessages();
+    }
+
+    @Override
+    public void cancelProgressDialog() {
+        if (worker != null) {
+            worker.cancel(true);
+        }
     }
 
     private void retrieveMessages() {
@@ -105,12 +120,11 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
                        break;
                    }
 
-                   System.out.println(message);
                    retrievedMessages.add(message);
                    count++;
                    publish(count);
                }
-               return null;
+               return retrievedMessages;
            }
 
            @Override
@@ -123,8 +137,11 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 
                try {
                    List<Message> retrievedMessages = get();
-                   if (retrievedMessages != null) {
-                       System.out.println("Retrieved " + retrievedMessages.size() + " messages.");
+
+                   messageListModel.removeAllElements();
+
+                   for (Message message : retrievedMessages) {
+                       messageListModel.addElement(message.getTitle());
                    }
 
                } catch (InterruptedException e) {
@@ -139,18 +156,10 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
                int retrievedMessages = counts.get(counts.size() - 1);
 
                progressDialog.setValue(retrievedMessages);
-               System.out.println("Got " + retrievedMessages + " messages.");
            }
        };
 
         worker.execute();
-    }
-
-    @Override
-    public void cancelProgressDialog() {
-        if (worker != null) {
-            worker.cancel(true);
-        }
     }
 
     private DefaultMutableTreeNode createTree() {
