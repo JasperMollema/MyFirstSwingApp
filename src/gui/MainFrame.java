@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import java.util.prefs.Preferences;
 
 public class MainFrame extends JFrame {
-    private TextPanel textPanel;
     private Toolbar toolbar;
     private FormPanel formPanel;
     private JFileChooser fileChooser;
@@ -32,7 +31,6 @@ public class MainFrame extends JFrame {
         setLayout(new BorderLayout());
         setJMenuBar(createMenuBar());
 
-        textPanel = new TextPanel();
         toolbar = new Toolbar();
         formPanel = new FormPanel();
         tablePanel = new TablePanel();
@@ -164,21 +162,6 @@ public class MainFrame extends JFrame {
 
     private void addFormListener() {
         formPanel.setFormListener(formEvent -> {
-            String name = "Name: " + formEvent.getName();
-            String occupation = "Occupation: " + formEvent.getOccupation();
-            String ageCategory = "Age category: " + formEvent.getAgeCategory();
-            String maritalStatus = "Marital status: " + formEvent.getMaritalStatus();
-            String gender = "Gender : " + formEvent.getGender();
-
-            textPanel.appendText(
-                    name + "\n"
-                            + occupation + "\n"
-                            + ageCategory + "\n"
-                            + maritalStatus + "\n"
-                            + getIsClubMemberString(formEvent) + "\n"
-                            + gender + "\n\n"
-            );
-
             personController.addPerson(createFormPerson(formEvent));
             tablePanel.fillTable(personController.getFormPersonList());
             tablePanel.refresh();

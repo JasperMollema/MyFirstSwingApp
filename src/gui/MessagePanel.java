@@ -23,6 +23,10 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
     private MessageServer messageServer;
     private ProgressDialog progressDialog;
     private SwingWorker worker;
+    private TextPanel textPanel;
+    private JList messageList;
+    private JSplitPane upperPane;
+    private JSplitPane lowerPane;
 
     public MessagePanel(JFrame parent) {
         treeCellRenderer = new ServerTreeCellRenderer();
@@ -67,7 +71,20 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
         });
         setLayout(new BorderLayout());
 
-        add(new JScrollPane(serverTree), BorderLayout.CENTER);
+        textPanel = new TextPanel();
+        messageList = new JList();
+
+        lowerPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, messageList, textPanel);
+        upperPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(serverTree), lowerPane);
+
+        textPanel.setMinimumSize(new Dimension(10, 100));
+        messageList.setMinimumSize(new Dimension(10, 100));
+
+        // Bepaalt verhouding splitpane.
+        upperPane.setResizeWeight(0.5);
+        lowerPane.setResizeWeight(0.5);
+
+        add(upperPane, BorderLayout.CENTER);
     }
 
     private void retrieveMessages() {

@@ -1,3 +1,5 @@
+package application;
+
 import gui.MainFrame;
 
 import javax.swing.*;
