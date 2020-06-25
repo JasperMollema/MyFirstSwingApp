@@ -67,7 +67,7 @@ public class ProgressDialog extends JDialog {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                if (visible == false) {
+                if (!visible) {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -77,9 +77,15 @@ public class ProgressDialog extends JDialog {
                 else {
                     progressBar.setValue(0);
                 }
-                System.out.println("Showing modal dialog");
+
+                if (visible) {
+                    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                }
+                else {
+                    setCursor(Cursor.getDefaultCursor());
+                }
+
                 ProgressDialog.super.setVisible(visible);
-                System.out.println("Finished showing modal dialog");
             }
         });
     }
