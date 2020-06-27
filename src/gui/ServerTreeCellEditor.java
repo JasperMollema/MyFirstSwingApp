@@ -49,7 +49,7 @@ public class ServerTreeCellEditor extends AbstractCellEditor implements TreeCell
 
     @Override
     public Object getCellEditorValue() {
-        serverInfo.update(checkBox.isSelected());
+        serverInfo.setIsChecked(checkBox.isSelected());
         return serverInfo;
     }
 

@@ -42,6 +42,7 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
         serverTree.setCellEditor(serverTreeCellEditor);
         serverTree.setEditable(true);
         serverTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+
         messageServer.fillSelectedServers(selectedServers);
         messageListModel = new DefaultListModel();
 
@@ -164,10 +165,18 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
     private DefaultMutableTreeNode createTree() {
         DefaultMutableTreeNode top = new DefaultMutableTreeNode("service");
 
+        // Create pre selected servers.
+        ServerInfo alkmaar = new ServerInfo(ServerInfo.ALKMAAR);
+        ServerInfo london = new ServerInfo(ServerInfo.LONDON);
+        alkmaar.setIsChecked(true);
+        london.setIsChecked(true);
+        selectedServers.add(ServerInfo.ALKMAAR);
+        selectedServers.add(ServerInfo.LONDON);
+
         // Dutch servers.
         DefaultMutableTreeNode dutchBranch = new DefaultMutableTreeNode("Netherlands");
         DefaultMutableTreeNode serverAmsterdam = new DefaultMutableTreeNode(new ServerInfo(ServerInfo.AMSTERDAM));
-        DefaultMutableTreeNode serverAlkmaar = new DefaultMutableTreeNode(new ServerInfo(ServerInfo.ALKMAAR));
+        DefaultMutableTreeNode serverAlkmaar = new DefaultMutableTreeNode(alkmaar);
         DefaultMutableTreeNode serverDenBosch = new DefaultMutableTreeNode(new ServerInfo(ServerInfo.DEN_BOSCH));
 
         dutchBranch.add(serverAmsterdam);
@@ -176,7 +185,7 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 
         // UK servers.
         DefaultMutableTreeNode UKBranch = new DefaultMutableTreeNode("UK");
-        DefaultMutableTreeNode serverLondon = new DefaultMutableTreeNode(new ServerInfo(ServerInfo.LONDON));
+        DefaultMutableTreeNode serverLondon = new DefaultMutableTreeNode(london);
         DefaultMutableTreeNode serverBristol = new DefaultMutableTreeNode(new ServerInfo(ServerInfo.BRISTOL));
         DefaultMutableTreeNode serverLeeds = new DefaultMutableTreeNode(new ServerInfo(ServerInfo.LEEDS));
 

@@ -42,10 +42,6 @@ public class ServerInfo {
         }
     }
 
-    public void update(boolean isSelected) {
-        checked = isSelected;
-    }
-
     @Override
     public String toString() {
         return name;
@@ -53,6 +49,10 @@ public class ServerInfo {
 
     public boolean isChecked() {
         return checked;
+    }
+
+    public void setIsChecked(boolean isSelected) {
+        checked = isSelected;
     }
 
     public int getId() {
