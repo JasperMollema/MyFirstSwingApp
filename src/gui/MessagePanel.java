@@ -77,6 +77,12 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
         textPanel = new TextPanel();
         messageList = new JList(messageListModel);
         messageList.setCellRenderer(new MessageListRenderer());
+        messageList.addListSelectionListener(
+                event -> {
+                    Message message = (Message) messageList.getSelectedValue();
+                    textPanel.setText(message.getContents());
+                }
+        );
 
         lowerPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(messageList), textPanel);
         upperPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(serverTree), lowerPane);
