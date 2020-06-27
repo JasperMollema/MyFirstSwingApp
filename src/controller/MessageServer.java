@@ -55,9 +55,9 @@ public class MessageServer implements Iterable<Message>{
     }
 
     public void fillSelectedServers(Set<Integer> servers) {
-        servers.stream()
-                .forEach(
-                        id -> messages.get(id).stream()
+        selectedMessages.clear();
+        servers.forEach(
+                id -> messages.get(id).stream()
                                 .filter(message -> !selectedMessages.contains(message))
                                 .forEach(selectedMessages::add));
     }
