@@ -54,12 +54,10 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 
                 if (serverInfo.isChecked()) {
                     selectedServers.add(serverId);
-                    System.out.println("Checked server: " + serverInfo);
                 }
 
                 else {
                     selectedServers.remove(serverId);
-                    System.out.println("Unchecked server: " + serverInfo);
                 }
 
                 messageServer.fillSelectedServers(selectedServers);
@@ -77,6 +75,7 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 
         textPanel = new TextPanel();
         messageList = new JList(messageListModel);
+        messageList.setCellRenderer(new MessageListRenderer());
 
         lowerPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(messageList), textPanel);
         upperPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, new JScrollPane(serverTree), lowerPane);
@@ -141,7 +140,7 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
                    messageListModel.removeAllElements();
 
                    for (Message message : retrievedMessages) {
-                       messageListModel.addElement(message.getTitle());
+                       messageListModel.addElement(message);
                    }
 
                } catch (InterruptedException e) {

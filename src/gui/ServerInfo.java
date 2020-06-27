@@ -45,6 +45,7 @@ public class ServerInfo {
     public void update(boolean isSelected) {
         checked = isSelected;
     }
+
     @Override
     public String toString() {
         return name;

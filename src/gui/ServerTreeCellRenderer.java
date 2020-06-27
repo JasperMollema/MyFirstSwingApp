@@ -6,6 +6,8 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 
+import static utils.Utils.createIcon;
+
 public class ServerTreeCellRenderer implements TreeCellRenderer {
     private JCheckBox leafRenderer;
     private DefaultTreeCellRenderer nonLeafRenderer;
@@ -19,9 +21,9 @@ public class ServerTreeCellRenderer implements TreeCellRenderer {
         this.leafRenderer = new JCheckBox();
         this.nonLeafRenderer = new DefaultTreeCellRenderer();
 
-        nonLeafRenderer.setLeafIcon(Utils.createIcon("/images/Server16.gif"));
-        nonLeafRenderer.setOpenIcon(Utils.createIcon("/images/WebComponent16.gif"));
-        nonLeafRenderer.setClosedIcon(Utils.createIcon("/images/WebComponentAdd16.gif"));
+        nonLeafRenderer.setLeafIcon(createIcon("/images/Server16.gif"));
+        nonLeafRenderer.setOpenIcon(createIcon("/images/WebComponent16.gif"));
+        nonLeafRenderer.setClosedIcon(createIcon("/images/WebComponentAdd16.gif"));
 
         textForeground = UIManager.getColor("Tree.textForeground");
         textBackground = UIManager.getColor("Tree.textBackground");

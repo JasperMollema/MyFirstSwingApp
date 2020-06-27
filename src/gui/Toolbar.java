@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static gui.Utils.createIcon;
+import static utils.Utils.createIcon;
 
 public class Toolbar extends JToolBar implements ActionListener {
     private JButton saveButton;
