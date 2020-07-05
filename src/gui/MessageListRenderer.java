@@ -1,6 +1,7 @@
 package gui;
 
 import model.Message;
+import utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +16,7 @@ import static utils.Utils.createIcon;
 public class MessageListRenderer implements ListCellRenderer {
     private JPanel panel;
     private JLabel label;
+    private Font labelFont;
 
     private Color selectedColor;
     private Color normalColor;
@@ -22,6 +24,9 @@ public class MessageListRenderer implements ListCellRenderer {
     public MessageListRenderer() {
         panel = new JPanel();
         label = new JLabel();
+        labelFont = Utils.createTrueTypeFont("/fonts/JMHTypewriter.ttf").deriveFont(Font.PLAIN, 18);
+
+        label.setFont(labelFont);
 
         selectedColor = new Color(210, 210, 255);
         normalColor = Color.WHITE;

@@ -1,6 +1,8 @@
 package utils;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
 import java.net.URL;
 
 public class Utils {
@@ -55,13 +57,59 @@ public class Utils {
     }
 
     public static ImageIcon createIcon(String path) {
-        URL url = utils.Utils.class.getResource(path);
+        URL url = createUrl(path);
 
         if (url == null) {
-            System.out.println("Unable to load image " + path);
             return null;
         }
 
         return new ImageIcon(url);
+    }
+
+    public static Font createTrueTypeFont(String path) {
+        URL url = createUrl(path);
+
+        if (url == null || !isTrueTypeFont(path)) {
+            return null;
+        }
+
+        Font font = null;
+
+        try {
+            font = Font.createFont(Font.TRUETYPE_FONT, url.openStream());
+        } catch (FontFormatException e) {
+            System.err.println("Bad format in font file: " + path);
+        } catch (IOException e) {
+            System.err.println("Unable to read font file: " + path);
+        }
+
+        return font;
+    }
+
+    public static boolean isTrueTypeFont(String path) {
+        if (path == null) {
+            System.err.println("Utils.isTrueTypeFont(): path is null");
+            return false;
+        }
+
+        String postFix = path.substring(path.length() - 3);
+        boolean isTrueTypeFont = postFix.equalsIgnoreCase("ttf");
+
+        if (!isTrueTypeFont) {
+            System.err.println("Font file is not an ttf file");
+        }
+
+        return isTrueTypeFont;
+    }
+
+    public static URL createUrl(String path) {
+        URL url = utils.Utils.class.getResource(path);
+
+        if (url == null) {
+            System.err.println("Unable to load file " + path);
+            return null;
+        }
+
+        return url;
     }
 }

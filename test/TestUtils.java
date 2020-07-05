@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.Test;
 import utils.Utils;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestUtils {
     @Test
@@ -24,6 +24,14 @@ public class TestUtils {
         assertEquals(false, utils.Utils.integerToBoolean(testFalse));
         assertEquals(null, utils.Utils.integerToBoolean(testInvalid));
         assertEquals(null, utils.Utils.integerToBoolean(testInvalid1));
+    }
 
+    @Test
+    void testIsOtfFont() {
+        String ttf = "file.ttf";
+        String notOtf = "file.atf";
+
+        assertTrue(Utils.isTrueTypeFont(ttf));
+        assertFalse(Utils.isTrueTypeFont(notOtf));
     }
 }
