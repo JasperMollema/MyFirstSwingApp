@@ -17,7 +17,8 @@ public class SearchList {
         PreparedStatement selectStatement = database.createPreparedStatement(
                 "select * from " + tableName);
 
-        result = selectStatement.executeQuery();
+        database.executeQuery(selectStatement);
+        result = database.getResultSet();
     }
 
     public void delete() throws SQLException {

@@ -5,10 +5,10 @@ public class FormPerson {
 
     public String name;
     public String occupation;
-    public Integer ageCategory;
+    public String ageCategory;
     public String maritalStatus;
     public String gender;
-    public String isClubMember;
+    public Boolean isClubMember;
     public String memberId;
 
     public Object getValue(int fieldId) {

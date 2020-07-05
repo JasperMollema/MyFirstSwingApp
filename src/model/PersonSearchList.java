@@ -11,6 +11,9 @@ import java.util.List;
 public class PersonSearchList extends SearchList {
     private List<Person> personList;
     private List<Person> deletedPersons;
+    private List<Person> updatedPersons;
+    private List<Person> addedPersons;
+    private boolean isModified;
 
     private static final String ID_COLUMN = "id";
     private static final String NAME_COLUMN = "name";
@@ -25,6 +28,8 @@ public class PersonSearchList extends SearchList {
         super();
         personList = new ArrayList<>();
         deletedPersons = new ArrayList<>();
+        updatedPersons = new ArrayList<>();
+        addedPersons = new ArrayList<>();
         this.tableName = "person";
     }
 
@@ -33,13 +38,16 @@ public class PersonSearchList extends SearchList {
     }
 
     public void deletePerson(int index) {
+        System.out.println("PersonSearchList deletePerson()");
         Person person = personList.get(index);
         personList.remove(index);
         deletedPersons.add(person);
+        isModified = true;
     }
 
     public void save() throws SQLException {
-        for (Person person : personList) {
+        System.out.println("PersonSearchList save()");
+        for (Person person : addedPersons) {
             person.save();
         }
 
@@ -47,11 +55,18 @@ public class PersonSearchList extends SearchList {
             delete(person.getId());
         }
 
+        for (Person person : updatedPersons) {
+            person.update();
+        }
+
         personList.clear();
         deletedPersons.clear();
+        addedPersons.clear();
+        updatedPersons.clear();
     }
 
     public void findPersons() throws SQLException {
+        System.out.println("PersonSearchList findPersons()");
         personList.clear();
         find();
 
@@ -94,5 +109,9 @@ public class PersonSearchList extends SearchList {
 
     public List<Person> getResult() {
         return Collections.unmodifiableList(personList);
+    }
+
+    public boolean isModified() {
+        return isModified;
     }
 }

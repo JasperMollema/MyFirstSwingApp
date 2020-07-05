@@ -1,6 +1,10 @@
 package gui;
 
 public class AgeCategory {
+    public static final String CHILD = "child";
+    public static final String ADULT = "adult";
+    public static final String SENIOR = "senior";
+
     private int id;
     private String category;
 

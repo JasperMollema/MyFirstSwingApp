@@ -37,8 +37,6 @@ public class TablePanel extends JPanel {
                     if (personTableListener == null) {
                         return;
                     }
-
-
                     personTableListener.deleteRow(table.getSelectedRow());
                 }
         );

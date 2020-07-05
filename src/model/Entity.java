@@ -15,13 +15,6 @@ public abstract class Entity implements Serializable {
         database = new DatabaseAcces();
     }
 
-    public void save() throws SQLException {
-        if (isNew()) {
-            insert();
-        }
-        update();
-    }
-
     public void retrieve(int id) throws SQLException {
         String retrieveSql = "select * from " + tableName + "where id = ?";
         PreparedStatement retrieveStatement = database.createPreparedStatement(retrieveSql);
@@ -36,11 +29,11 @@ public abstract class Entity implements Serializable {
         return ++id;
     }
 
-    protected void insert() throws SQLException {
+    public void save() throws SQLException {
         database.executeUpdate(createInsertStatement());
     }
 
-    protected void update() throws SQLException {
+    public void update() throws SQLException {
         database.executeUpdate(createUpdateStatement());
     }
 

@@ -6,8 +6,61 @@ import java.util.List;
 
 public class PersonTableModel extends AbstractTableModel {
     List<FormPerson> formPersonList;
+
+    private final int NAME_COLUMN = 0;
+    private final int OCCUPATION_COLUMN = 1;
+    private final int AGE_CATEGORY_COLUMN = 2;
+    private final int MARITAL_STATUS_COLUMN = 3;
+    private final int GENDER_COLUMN = 4;
+    private final int CLUB_MEMBER_COLUMN = 5;
+    private final int MEMBER_ID_COLUMN = 6;
+
     private String[] columnNames = {"Name", "Occupation","Age Category",
             "Marital Status", "Gender", "Club Member", "Member Id"};
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        switch (columnIndex) {
+            case NAME_COLUMN:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        if (formPersonList == null) {
+            return;
+        }
+
+        FormPerson formPerson = formPersonList.get(rowIndex);
+
+        switch (columnIndex) {
+            case NAME_COLUMN:
+                formPerson.name = aValue.toString();
+                break;
+            default:
+                return;
+        }
+    }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (columnIndex) {
+            case NAME_COLUMN:
+            case AGE_CATEGORY_COLUMN:
+            case OCCUPATION_COLUMN:
+            case MARITAL_STATUS_COLUMN:
+            case GENDER_COLUMN:
+            case MEMBER_ID_COLUMN:
+                return String.class;
+            case CLUB_MEMBER_COLUMN:
+                return Boolean.class;
+            default:
+                return null;
+        }
+    }
 
     public PersonTableModel() {
         formPersonList = new ArrayList<>();

@@ -1,7 +1,6 @@
 package gui;
 
 import controller.PersonController;
-import utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,6 +69,8 @@ public class MainFrame extends JFrame {
         add(toolbar, BorderLayout.NORTH);
         add(splitPane);
 
+        refreshPersonTable();
+
         setSize(600, 500);
         setMinimumSize(new Dimension(500, 400));
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -101,7 +102,7 @@ public class MainFrame extends JFrame {
                 if (!personController.isTableChanged()) {
                     JOptionPane.showMessageDialog(
                             MainFrame.this,
-                            "There ar no changes to save",
+                            "There are no changes to save",
                             "No changes made",
                             JOptionPane.INFORMATION_MESSAGE
                     );
@@ -110,7 +111,7 @@ public class MainFrame extends JFrame {
                 if (personController.arePersonsDeleted()) {
                     int action = JOptionPane.showConfirmDialog(
                             MainFrame.this,
-                            "You have deleted person, are you sure you want to save these changes?",
+                            "You have deleted a person, are you sure you want to save these changes?",
                             "Persons deleted",
                             JOptionPane.OK_CANCEL_OPTION);
 
@@ -133,27 +134,7 @@ public class MainFrame extends JFrame {
 
             @Override
             public void loadEventOccurred() {
-
-                try {
-                    if (!personController.load()) {
-                        JOptionPane.showMessageDialog(
-                                MainFrame.this,
-                                "There are no persons to load",
-                                "No persons available",
-                                JOptionPane.INFORMATION_MESSAGE
-                        );
-                    }
-
-                } catch (SQLException exception) {
-                    JOptionPane.showMessageDialog(
-                            MainFrame.this,
-                            "Unable to load from database" ,
-                            "Database Connection Problem",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-
-                tablePanel.fillTable(personController.getFormPersonList());
-                tablePanel.refresh();
+                refreshPersonTable();
             }
 
             @Override
@@ -161,6 +142,29 @@ public class MainFrame extends JFrame {
                 messagePanel.refresh();
             }
         });
+    }
+
+    private void refreshPersonTable() {
+        try {
+            if (!personController.load()) {
+                JOptionPane.showMessageDialog(
+                        MainFrame.this,
+                        "There are no persons to load",
+                        "No persons available",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+
+        } catch (SQLException exception) {
+            JOptionPane.showMessageDialog(
+                    MainFrame.this,
+                    "Unable to load from database" ,
+                    "Database Connection Problem",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+        tablePanel.fillTable(personController.getFormPersonList());
+        tablePanel.refresh();
     }
 
     private void addTableListener() {
@@ -205,7 +209,7 @@ public class MainFrame extends JFrame {
         formPerson.ageCategory = formEvent.getAgeCategory();
         formPerson.maritalStatus = formEvent.getMaritalStatus();
         formPerson.gender = formEvent.getGender();
-        formPerson.isClubMember = Utils.booleanToString(formEvent.isClubMember());
+        formPerson.isClubMember = formEvent.isClubMember();
         formPerson.memberId = formEvent.getMemberID();
 
         return formPerson;

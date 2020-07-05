@@ -2,7 +2,6 @@ package controller;
 
 import gui.FormPerson;
 import model.*;
-import utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +15,10 @@ public class PersonController {
     private PersonSearchList personSearchList;
     private FileSaver fileSaver;
     private List<Person> personList;
+
+    private final String CHILD_VALUE = gui.AgeCategory.CHILD;
+    private final String ADULT_VALUE = gui.AgeCategory.ADULT;
+    private final String SENIOR_VALUE = gui.AgeCategory.SENIOR;
 
     public PersonController() {
         personSearchList = new PersonSearchList();
@@ -33,7 +36,7 @@ public class PersonController {
                 formPerson.occupation,
                 determineAgeCategory(formPerson),
                 determineMaritalStatus(formPerson),
-                Utils.stringToBoolean(formPerson.isClubMember),
+                formPerson.isClubMember,
                 formPerson.memberId,
                 determineGender(formPerson)
         );
@@ -92,7 +95,7 @@ public class PersonController {
         formPerson.occupation = person.getOccupation();
         formPerson.ageCategory = fillAgeCategory(person.getAgeCategory());
         formPerson.maritalStatus = fillMaritalStatus(person.getMaritalStatus());
-        formPerson.isClubMember = Utils.booleanToString(person.getIsClubMember());
+        formPerson.isClubMember = person.getIsClubMember();
         formPerson.memberId = person.getMemberID();
         formPerson.gender = fillGender(person.getGender());
 
@@ -118,20 +121,20 @@ public class PersonController {
         }
     }
 
-    private Integer fillAgeCategory(AgeCategory ageCategory) {
+    private String fillAgeCategory(AgeCategory ageCategory) {
         switch (ageCategory) {
-            case CHILD : return 0;
-            case ADULT: return 1;
-            case SENIOR: return 2;
+            case CHILD : return CHILD_VALUE;
+            case ADULT: return ADULT_VALUE;
+            case SENIOR: return SENIOR_VALUE;
             default: return null;
         }
     }
 
     private AgeCategory determineAgeCategory(FormPerson formPerson) {
         switch (formPerson.ageCategory) {
-            case 0: return AgeCategory.CHILD;
-            case 1: return AgeCategory.ADULT;
-            case 2: return AgeCategory.SENIOR;
+            case "child": return AgeCategory.CHILD;
+            case "adult": return AgeCategory.ADULT;
+            case "senior": return AgeCategory.SENIOR;
             default:return null;
         }
     }

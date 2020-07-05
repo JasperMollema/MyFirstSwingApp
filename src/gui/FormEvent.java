@@ -5,13 +5,13 @@ import java.util.EventObject;
 public class FormEvent extends EventObject {
     private String name;
     private String occupation;
-    private int ageCategory;
+    private String ageCategory;
     private String maritalStatus;
     private Boolean isClubMember;
     private String memberID;
     private String gender;
 
-    public FormEvent(FormPanel formPanel, String name, String occupation, int ageCategory,
+    public FormEvent(FormPanel formPanel, String name, String occupation, String ageCategory,
                      String maritalStatus, boolean isClubMember, String memberID, String gender) {
         super(formPanel);
         this.name = name;
@@ -31,7 +31,7 @@ public class FormEvent extends EventObject {
         return occupation;
     }
 
-    public int getAgeCategory() {
+    public String getAgeCategory() {
         return ageCategory;
     }
 
