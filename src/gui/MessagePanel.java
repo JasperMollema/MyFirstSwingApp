@@ -63,7 +63,6 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
 
                 messageServer.fillSelectedServers(selectedServers);
 
-                retrieveMessages();
             }
 
             @Override
@@ -80,7 +79,7 @@ public class MessagePanel extends JPanel implements ProgressDialogListener {
         messageList.addListSelectionListener(
                 event -> {
                     Message message = (Message) messageList.getSelectedValue();
-                    textPanel.setText(message.getContents());
+                    textPanel.setText(message != null ? message.getContents() : null);
                 }
         );
 

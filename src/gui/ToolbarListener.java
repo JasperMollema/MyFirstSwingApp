@@ -1,7 +1,9 @@
 package gui;
 
 public interface ToolbarListener {
-    public void saveEventOccurred();
+    void saveEventOccurred();
 
-    public void loadEventOccurred();
+    void loadEventOccurred();
+
+    void retrieveEventOccured();
 }

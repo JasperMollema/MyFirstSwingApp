@@ -155,6 +155,11 @@ public class MainFrame extends JFrame {
                 tablePanel.fillTable(personController.getFormPersonList());
                 tablePanel.refresh();
             }
+
+            @Override
+            public void retrieveEventOccured() {
+                messagePanel.refresh();
+            }
         });
     }
 
@@ -191,17 +196,6 @@ public class MainFrame extends JFrame {
                 preferences.get("password", ""),
                 preferences.getInt("port", 3306)
         );
-    }
-
-    private String getIsClubMemberString(FormEvent formEvent) {
-        String isClubMemberValue = formEvent.isClubMember() ? "Yes" : "No";
-        String isClubMember = "Club member: " + isClubMemberValue;
-
-        if (formEvent.isClubMember()) {
-            isClubMember += "\nMember id: " + formEvent.getMemberID();
-        }
-
-        return isClubMember;
     }
 
     private FormPerson createFormPerson(FormEvent formEvent) {
