@@ -13,6 +13,8 @@ public class Toolbar extends JToolBar implements ActionListener {
     private JButton saveButton;
     private JButton loadButton;
     private JButton retrieveMessageButton;
+    private JButton previousButton;
+    private JButton nextButton;
 
     private ToolbarListener toolbarListener;
 
@@ -32,15 +34,27 @@ public class Toolbar extends JToolBar implements ActionListener {
         retrieveMessageButton.setToolTipText("Retrieve Messages");
         retrieveMessageButton.setIcon(createIcon("/images/Search16.gif"));
 
+        previousButton = new JButton();
+        previousButton.setToolTipText("Undo last change");
+        previousButton.setIcon(createIcon("/images/Undo24.gif"));
+
+        nextButton = new JButton();
+        nextButton.setToolTipText("Redo change");
+        nextButton.setIcon(createIcon("/images/Redo24.gif"));
+
         saveButton.addActionListener(this);
         loadButton.addActionListener(this);
         retrieveMessageButton.addActionListener(this);
+        previousButton.addActionListener(this);
+        nextButton.addActionListener(this);
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
 
         add(saveButton);
         add(loadButton);
         add(retrieveMessageButton);
+        add(previousButton);
+        add(nextButton);
     }
 
     public void setToolbarListener(ToolbarListener toolbarListener) {
@@ -65,6 +79,14 @@ public class Toolbar extends JToolBar implements ActionListener {
 
         if (clicked == retrieveMessageButton) {
             toolbarListener.retrieveEventOccured();
+        }
+
+        if (clicked == previousButton) {
+            System.out.println("PreviousButton clicked");
+        }
+
+        if (clicked == nextButton) {
+            System.out.println("NextButton clicked");
         }
     }
 }
