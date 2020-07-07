@@ -19,7 +19,7 @@ public class TestDatabase {
         new Person("Sara", "Student", AgeCategory.ADULT, MaritalStatus.COHABITING, false, null, Gender.FEMALE).save();
 
         personSearchList.findPersons();
-        List<Person> personList = personSearchList.getResult();
+        List<Person> personList = personSearchList.getPersons();
 
         for (Person person : personList) {
             String name = personSearchList.translateIdToName(person.getId());

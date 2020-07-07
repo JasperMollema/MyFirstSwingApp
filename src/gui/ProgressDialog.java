@@ -1,5 +1,7 @@
 package gui;
 
+import gui.listeners.ProgressDialogListener;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;

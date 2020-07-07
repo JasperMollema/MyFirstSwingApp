@@ -1,6 +1,8 @@
 package gui;
 
 import controller.PersonController;
+import gui.listeners.PersonTableListenerImpl;
+import gui.listeners.ToolbarListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -168,12 +170,7 @@ public class MainFrame extends JFrame {
     }
 
     private void addTableListener() {
-        tablePanel.setPersonTableListener(
-                row -> {
-                    personController.deletePerson(row);
-                    tablePanel.fillTable(personController.getFormPersonList());
-                    tablePanel.refresh();
-                });
+        tablePanel.setPersonTableListener(new PersonTableListenerImpl(personController, tablePanel));
     }
 
     private void addFormListener() {

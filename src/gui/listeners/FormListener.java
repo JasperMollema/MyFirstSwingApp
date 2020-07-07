@@ -1,4 +1,6 @@
-package gui;
+package gui.listeners;
+
+import gui.FormEvent;
 
 import java.util.EventListener;
 

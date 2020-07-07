@@ -4,6 +4,7 @@ import utils.Utils;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +14,7 @@ public class PersonSearchList extends SearchList {
     private List<Person> deletedPersons;
     private List<Person> updatedPersons;
     private List<Person> addedPersons;
-    private boolean isModified;
+    private ArrayDeque<PersonUpdate> updates;
 
     private static final String ID_COLUMN = "id";
     private static final String NAME_COLUMN = "name";
@@ -30,6 +31,7 @@ public class PersonSearchList extends SearchList {
         deletedPersons = new ArrayList<>();
         updatedPersons = new ArrayList<>();
         addedPersons = new ArrayList<>();
+        updates = new ArrayDeque<>();
         this.tableName = "person";
     }
 
@@ -42,7 +44,6 @@ public class PersonSearchList extends SearchList {
         Person person = personList.get(index);
         personList.remove(index);
         deletedPersons.add(person);
-        isModified = true;
     }
 
     public void save() throws SQLException {
@@ -89,6 +90,14 @@ public class PersonSearchList extends SearchList {
         result.close();
     }
 
+    public void update(int index, Person updatedPerson) {
+        // The updated person does not have a id:
+        updatedPerson.setId(personList.get(index).getId());
+        updates.add(new PersonUpdate(personList.get(index), updatedPerson));
+        updatedPersons.add(updatedPerson);
+        personList.set(index, updatedPerson);
+    }
+
     public String translateIdToName (Integer id) throws SQLException {
         if (id == null) {
             return null;
@@ -107,11 +116,7 @@ public class PersonSearchList extends SearchList {
         return result.getString(NAME_COLUMN);
     }
 
-    public List<Person> getResult() {
+    public List<Person> getPersons() {
         return Collections.unmodifiableList(personList);
-    }
-
-    public boolean isModified() {
-        return isModified;
     }
 }

@@ -1,6 +1,7 @@
 package gui;
 
 import controller.MessageServer;
+import gui.listeners.ProgressDialogListener;
 import model.Message;
 
 import javax.swing.*;

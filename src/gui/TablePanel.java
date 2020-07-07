@@ -1,5 +1,7 @@
 package gui;
 
+import gui.listeners.PersonTableListener;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -14,6 +16,14 @@ public class TablePanel extends JPanel {
 
     public TablePanel() {
         tableModel = new PersonTableModel();
+        tableModel.setTableModelListener(event -> {
+            if (personTableListener != null) {
+                personTableListener.rowChanged(
+                        event.getFirstRow(),
+                        tableModel.getFormPersonList());
+            }
+        });
+
         table = new JTable(tableModel);
         popupMenu = new JPopupMenu();
 

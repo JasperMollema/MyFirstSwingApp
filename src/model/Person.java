@@ -143,6 +143,17 @@ public class Person extends Entity {
     }
 
     @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Person)) {
+            return false;
+        }
+
+        Person otherPerson = (Person) object;
+
+        return otherPerson.id == this.id;
+    }
+
+    @Override
     public String toString() {
         return "Person{" +
                 "id=" + id +
@@ -186,5 +197,9 @@ public class Person extends Entity {
 
     public Gender getGender() {
         return gender;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
