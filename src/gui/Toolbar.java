@@ -37,10 +37,12 @@ public class Toolbar extends JToolBar implements ActionListener {
         previousButton = new JButton();
         previousButton.setToolTipText("Undo last change");
         previousButton.setIcon(createIcon("/images/Undo24.gif"));
+        previousButton.setVisible(false);
 
         nextButton = new JButton();
         nextButton.setToolTipText("Redo change");
         nextButton.setIcon(createIcon("/images/Redo24.gif"));
+        nextButton.setVisible(false);
 
         saveButton.addActionListener(this);
         loadButton.addActionListener(this);
@@ -78,15 +80,23 @@ public class Toolbar extends JToolBar implements ActionListener {
         }
 
         if (clicked == retrieveMessageButton) {
-            toolbarListener.retrieveEventOccured();
+            toolbarListener.retrieveEventOccurred();
         }
 
         if (clicked == previousButton) {
-            System.out.println("PreviousButton clicked");
+            toolbarListener.undoEventOccurred();
         }
 
         if (clicked == nextButton) {
-            System.out.println("NextButton clicked");
+            toolbarListener.redoEventOccurred();
         }
+    }
+
+    public void setVisibilityUndoButton(boolean isVisible) {
+        previousButton.setVisible(isVisible);
+    }
+
+    public void setVisibilityRedoButton(boolean isVisible) {
+        nextButton.setVisible(isVisible);
     }
 }

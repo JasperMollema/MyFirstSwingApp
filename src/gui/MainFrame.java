@@ -2,7 +2,7 @@ package gui;
 
 import controller.PersonController;
 import gui.listeners.PersonTableListenerImpl;
-import gui.listeners.ToolbarListener;
+import gui.listeners.ToolbarListenerImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -71,8 +71,6 @@ public class MainFrame extends JFrame {
         add(toolbar, BorderLayout.NORTH);
         add(splitPane);
 
-        refreshPersonTable();
-
         setSize(600, 500);
         setMinimumSize(new Dimension(500, 400));
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -98,79 +96,17 @@ public class MainFrame extends JFrame {
     }
 
     private void addToolbarListener() {
-        toolbar.setToolbarListener(new ToolbarListener() {
-            @Override
-            public void saveEventOccurred() {
-                if (!personController.isTableChanged()) {
-                    JOptionPane.showMessageDialog(
-                            MainFrame.this,
-                            "There are no changes to save",
-                            "No changes made",
-                            JOptionPane.INFORMATION_MESSAGE
-                    );
-                }
-
-                if (personController.arePersonsDeleted()) {
-                    int action = JOptionPane.showConfirmDialog(
-                            MainFrame.this,
-                            "You have deleted a person, are you sure you want to save these changes?",
-                            "Persons deleted",
-                            JOptionPane.OK_CANCEL_OPTION);
-
-                    if (action == JOptionPane.CANCEL_OPTION){
-                        return;
-                    }
-                }
-
-                try {
-                    personController.save();
-                } catch (SQLException exception) {
-                    JOptionPane.showMessageDialog(
-                            MainFrame.this,
-                            "Unable to save to database" ,
-                            "Database Connection Problem",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-                tablePanel.refresh();
-            }
-
-            @Override
-            public void loadEventOccurred() {
-                refreshPersonTable();
-            }
-
-            @Override
-            public void retrieveEventOccured() {
-                messagePanel.refresh();
-            }
+        toolbar.setToolbarListener(new ToolbarListenerImpl(
+                personController,
+                tablePanel,
+                messagePanel,
+                toolbar
+        ) {
         });
     }
 
-    private void refreshPersonTable() {
-        try {
-            if (!personController.load()) {
-                JOptionPane.showMessageDialog(
-                        MainFrame.this,
-                        "There are no persons to load",
-                        "No persons available",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
-            }
-
-        } catch (SQLException exception) {
-            JOptionPane.showMessageDialog(
-                    MainFrame.this,
-                    "Unable to load from database" ,
-                    "Database Connection Problem",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-
-        tablePanel.fillTable(personController.getFormPersonList());
-        tablePanel.refresh();
-    }
-
     private void addTableListener() {
-        tablePanel.setPersonTableListener(new PersonTableListenerImpl(personController, tablePanel));
+        tablePanel.setPersonTableListener(new PersonTableListenerImpl(personController, tablePanel, toolbar));
     }
 
     private void addFormListener() {

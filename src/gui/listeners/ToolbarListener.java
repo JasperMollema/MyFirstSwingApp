@@ -5,5 +5,9 @@ public interface ToolbarListener {
 
     void loadEventOccurred();
 
-    void retrieveEventOccured();
+    void retrieveEventOccurred();
+
+    void undoEventOccurred();
+
+    void redoEventOccurred();
 }

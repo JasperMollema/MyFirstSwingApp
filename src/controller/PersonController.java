@@ -68,6 +68,24 @@ public class PersonController {
         refillPersonList();
     }
 
+    public void goToPreviousUpdate() {
+        personSearchList.goToPreviousUpdate();
+        refillPersonList();
+    }
+
+    public void goToNextUpdate() {
+        personSearchList.goToNextUpdate();
+        refillPersonList();
+    }
+
+    public boolean hasPreviousUpdate() {
+        return personSearchList.hasPreviousUpdate();
+    }
+
+    public boolean hasNextUpdate() {
+        return personSearchList.hasNextUpdate();
+    }
+
     public void savePersonsToFile(File file) throws IOException {
         fileSaver.savePersonsToFile(file);
     }
