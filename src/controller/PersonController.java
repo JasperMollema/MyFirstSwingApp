@@ -5,6 +5,7 @@ import model.DatabaseAcces;
 import model.FileSaver;
 import model.Person;
 import model.PersonSearchList;
+import model.personList.PersonListModifier;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,77 +14,66 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PersonController {
-    private boolean tableChanged;
-    private boolean personsDeleted;
     private PersonSearchList personSearchList;
     private FileSaver fileSaver;
+    private PersonListModifier personListModifier;
     private List<Person> personList;
+    private boolean tableChanged;
+    private boolean personsDeleted;
 
     public PersonController() {
         personSearchList = new PersonSearchList();
-        fileSaver = new FileSaver();
         personList = new ArrayList<>();
+        personListModifier = new PersonListModifier(personList);
+        fileSaver = new FileSaver();
     }
 
-    public void disconnectDatabase() throws SQLException {
-        new DatabaseAcces().disconnect();
+    public boolean loadPersons() throws SQLException {
+        personSearchList.findPersons();
+        personList = personSearchList.getResult();
+        return !personList.isEmpty();
     }
+
+    public void savePersons() throws SQLException{}
 
     public void addPerson(FormPerson formPerson) {
         Person person = PersonControllerHelper.formPersonToPerson(formPerson);
-
-        personSearchList.addPerson(person);
-        refillPersonList();
+        updatePersonList();
         tableChanged = true;
     }
 
+    public void updatePerson(int row, FormPerson updatedFormPerson) {
+        Person originalPerson = personList.get(row);
+        Person updatedPerson = PersonControllerHelper.formPersonToPerson(updatedFormPerson);
+        tableChanged = true;
+        updatePersonList();
+    }
+
     public void deletePerson(int row) {
-        personSearchList.deletePerson(row);
-        refillPersonList();
+        Person person = personList.get(row);
+        updatePersonList();
         tableChanged = true;
         personsDeleted = true;
     }
 
-    public List<FormPerson> getFormPersonList() {
-        return PersonControllerHelper.personListToFormPersonList(personList);
+    public void undo() {
+        updatePersonList();
     }
 
-    public void save() throws SQLException {
-        personSearchList.save();
-        refillPersonList();
-        tableChanged = false;
-        personsDeleted = false;
+    public void redo() {
+        updatePersonList();
     }
 
-    public boolean load() throws SQLException {
-        personSearchList.findPersons();
-        refillPersonList();
-        return !personList.isEmpty();
-    }
-
-    public void update(int row, FormPerson updatedFormPerson) {
-        tableChanged = true;
-        // Row in the table corresponds with the index in the personlist.
-        personSearchList.update(row, PersonControllerHelper.formPersonToPerson(updatedFormPerson));
-        refillPersonList();
-    }
-
-    public void goToPreviousUpdate() {
-        personSearchList.goToPreviousUpdate();
-        refillPersonList();
-    }
-
-    public void goToNextUpdate() {
-        personSearchList.goToNextUpdate();
-        refillPersonList();
+    private void updatePersonList() {
+        personList = personListModifier.getPersonList();
     }
 
     public boolean hasPreviousUpdate() {
-        return personSearchList.hasPreviousUpdate();
+        return true;
     }
 
     public boolean hasNextUpdate() {
-        return personSearchList.hasNextUpdate();
+        return true;
     }
 
     public void savePersonsToFile(File file) throws IOException {
@@ -98,8 +88,12 @@ public class PersonController {
         return getFormPersonList();
     }
 
-    private void refillPersonList() {
-        personList = personSearchList.getPersons();
+    public List<FormPerson> getFormPersonList() {
+        return PersonControllerHelper.personListToFormPersonList(personList);
+    }
+
+    public void disconnectDatabase() throws SQLException {
+        new DatabaseAcces().disconnect();
     }
 
     public boolean isTableChanged() {

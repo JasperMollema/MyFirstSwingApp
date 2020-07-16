@@ -10,13 +10,7 @@ import java.util.List;
 
 public class PersonSearchList extends SearchList {
 
-    /** This list backs the data shown on the screen. Should always be up to date. */
     private List<Person> personList;
-
-    private List<Person> deletedPersons;
-    private List<Person> updatedPersons;
-    private List<Person> addedPersons;
-    private PersonUpdateManager personUpdateManager;
 
     private static final String ID_COLUMN = "id";
     private static final String NAME_COLUMN = "name";
@@ -30,42 +24,7 @@ public class PersonSearchList extends SearchList {
     public PersonSearchList() {
         super();
         personList = new ArrayList<>();
-        deletedPersons = new ArrayList<>();
-        updatedPersons = new ArrayList<>();
-        addedPersons = new ArrayList<>();
-        personUpdateManager = new PersonUpdateManager();
         this.tableName = "person";
-    }
-
-    public void addPerson(Person person) {
-        personList.add(person);
-    }
-
-    public void deletePerson(int index) {
-        System.out.println("PersonSearchList deletePerson()");
-        Person person = personList.get(index);
-        personList.remove(index);
-        deletedPersons.add(person);
-    }
-
-    public void save() throws SQLException {
-        System.out.println("PersonSearchList save()");
-        for (Person person : addedPersons) {
-            person.save();
-        }
-
-        for (Person person : deletedPersons) {
-            delete(person.getId());
-        }
-
-        for (Person person : updatedPersons) {
-            person.update();
-        }
-
-        personList.clear();
-        deletedPersons.clear();
-        addedPersons.clear();
-        updatedPersons.clear();
     }
 
     public void findPersons() throws SQLException {
@@ -92,36 +51,6 @@ public class PersonSearchList extends SearchList {
         result.close();
     }
 
-    public void update(int index, Person updatedPerson) {
-        // The updated person created in controller does not have an id:
-        updatedPerson.setId(personList.get(index).getId());
-        personUpdateManager.addPersonUpdate(new PersonUpdate(index, personList.get(index), updatedPerson));
-        updatedPersons.add(updatedPerson);
-        personList.set(index, updatedPerson);
-    }
-
-    public void goToPreviousUpdate() {
-        PersonUpdate previousUpdate = personUpdateManager.getPreviousUpdate();
-        int index = previousUpdate.getIndex();
-        Person originalPerson = previousUpdate.getOriginalPerson();
-        personList.set(index, originalPerson);
-    }
-
-    public void goToNextUpdate() {
-        PersonUpdate nextUpdate = personUpdateManager.getNextUpdate();
-        int index = nextUpdate.getIndex();
-        Person updatedPerson = nextUpdate.getUpdatedPerson();
-        personList.set(index, updatedPerson);
-    }
-
-    public boolean hasPreviousUpdate() {
-        return personUpdateManager.hasPreviousUpdate();
-    }
-
-    public boolean hasNextUpdate() {
-        return personUpdateManager.hasNextUpdate();
-    }
-
     public String translateIdToName (Integer id) throws SQLException {
         if (id == null) {
             return null;
@@ -140,7 +69,7 @@ public class PersonSearchList extends SearchList {
         return result.getString(NAME_COLUMN);
     }
 
-    public List<Person> getPersons() {
+    public List<Person> getResult() {
         return Collections.unmodifiableList(personList);
     }
 }

@@ -45,7 +45,7 @@ public class ToolbarListenerImpl implements ToolbarListener {
         }
 
         try {
-            personController.save();
+            personController.savePersons();
         } catch (SQLException exception) {
             JOptionPane.showMessageDialog(
                     MainFrame.class.cast(MainFrame.getFrames()),
@@ -68,7 +68,7 @@ public class ToolbarListenerImpl implements ToolbarListener {
 
     @Override
     public void undoEventOccurred() {
-        personController.goToPreviousUpdate();
+        personController.undo();
         toolbar.setVisibilityUndoButton(personController.hasPreviousUpdate());
         toolbar.setVisibilityRedoButton(personController.hasNextUpdate());
         tablePanel.fillTable(personController.getFormPersonList());
@@ -77,14 +77,14 @@ public class ToolbarListenerImpl implements ToolbarListener {
 
     @Override
     public void redoEventOccurred() {
-        personController.goToNextUpdate();
+        personController.redo();
         tablePanel.fillTable(personController.getFormPersonList());
         tablePanel.refresh();
     }
 
     private void refreshPersonTable() {
         try {
-            if (!personController.load()) {
+            if (!personController.loadPersons()) {
                 JOptionPane.showMessageDialog(
                         MainFrame.class.cast(MainFrame.getFrames()),
                         "There are no persons to load",
