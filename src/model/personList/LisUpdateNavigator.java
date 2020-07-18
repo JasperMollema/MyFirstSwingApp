@@ -3,12 +3,12 @@ package model.personList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListNavigator {
-    private List<ListUpdate> updates;
+public class LisUpdateNavigator<T> {
+    private List<ListUpdate<T>> listUpdates;
     private int currentUpdateIndex;
 
-    public ListNavigator() {
-        updates = new ArrayList<>();
+    public LisUpdateNavigator() {
+        listUpdates = new ArrayList<>();
         currentUpdateIndex = -1;
     }
 
@@ -16,14 +16,14 @@ public class ListNavigator {
         if (hasNextUpdate()) {
             removeNextUpdates();
         }
-        updates.add(listUpdate);
+        listUpdates.add(listUpdate);
         currentUpdateIndex++;
     }
 
     private void removeNextUpdates() {
-        int lastUpdateIndex = updates.size() - 1;
+        int lastUpdateIndex = listUpdates.size() - 1;
         for (;lastUpdateIndex > currentUpdateIndex; lastUpdateIndex--) {
-            updates.remove(lastUpdateIndex);
+            listUpdates.remove(lastUpdateIndex);
         }
     }
 
@@ -34,7 +34,7 @@ public class ListNavigator {
     }
 
     public boolean hasNextUpdate() {
-        return currentUpdateIndex < updates.size() - 1;
+        return currentUpdateIndex < listUpdates.size() - 1;
     }
 
     public void goToPreviousUpdate() {
@@ -47,13 +47,13 @@ public class ListNavigator {
         return currentUpdateIndex > 0;
     }
 
-    public ListUpdate getCurrentUpdate() {
+    public List<T> getCurrentUpdate() {
         throwExceptionWhenUpdatesIsEmpty();
-        return updates.get(currentUpdateIndex);
+        return listUpdates.get(currentUpdateIndex).getList();
     }
 
     private void throwExceptionWhenUpdatesIsEmpty() {
-        if (updates.isEmpty()) {
+        if (listUpdates.isEmpty()) {
             throw new NoUpdatesAvailableException();
         }
     }

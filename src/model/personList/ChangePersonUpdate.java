@@ -2,16 +2,16 @@ package model.personList;
 
 import model.Person;
 
-public class UpdatePerson extends PersonListChange {
+public class ChangePersonUpdate extends PersonListChange {
     private Person updatedPerson;
 
-    public UpdatePerson(Person person, int index, Person updatedPerson) {
-        super(person, index);
+    public ChangePersonUpdate(int index, Person updatedPerson) {
+        super(index);
         this.updatedPerson = updatedPerson;
     }
 
     @Override
-    public void handleChange() {
+    protected void handleChange() {
         personListCopy.set(index, updatedPerson);
     }
 }

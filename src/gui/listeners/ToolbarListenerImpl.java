@@ -69,15 +69,19 @@ public class ToolbarListenerImpl implements ToolbarListener {
     @Override
     public void undoEventOccurred() {
         personController.undo();
-        toolbar.setVisibilityUndoButton(personController.hasPreviousUpdate());
-        toolbar.setVisibilityRedoButton(personController.hasNextUpdate());
-        tablePanel.fillTable(personController.getFormPersonList());
-        tablePanel.refresh();
+        resetToolbar();
+
     }
 
     @Override
     public void redoEventOccurred() {
         personController.redo();
+        resetToolbar();
+    }
+
+    private void resetToolbar() {
+        toolbar.setVisibilityUndoButton(personController.hasPreviousUpdate());
+        toolbar.setVisibilityRedoButton(personController.hasNextUpdate());
         tablePanel.fillTable(personController.getFormPersonList());
         tablePanel.refresh();
     }

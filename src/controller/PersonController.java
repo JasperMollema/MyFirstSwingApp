@@ -5,75 +5,60 @@ import model.DatabaseAcces;
 import model.FileSaver;
 import model.Person;
 import model.PersonSearchList;
-import model.personList.PersonListModifier;
+import model.personList.PersonList;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PersonController {
     private PersonSearchList personSearchList;
     private FileSaver fileSaver;
-    private PersonListModifier personListModifier;
-    private List<Person> personList;
-    private boolean tableChanged;
-    private boolean personsDeleted;
+    private PersonList personList;
 
     public PersonController() {
         personSearchList = new PersonSearchList();
-        personList = new ArrayList<>();
-        personListModifier = new PersonListModifier(personList);
+        personList = new PersonList();
         fileSaver = new FileSaver();
     }
 
     public boolean loadPersons() throws SQLException {
         personSearchList.findPersons();
-        personList = personSearchList.getResult();
-        return !personList.isEmpty();
+        personList.loadPersons(personSearchList.getResult());
+        return !personSearchList.getResult().isEmpty();
     }
 
     public void savePersons() throws SQLException{}
 
     public void addPerson(FormPerson formPerson) {
         Person person = PersonControllerHelper.formPersonToPerson(formPerson);
-        updatePersonList();
-        tableChanged = true;
+        personList.addPerson(person);
     }
 
-    public void updatePerson(int row, FormPerson updatedFormPerson) {
-        Person originalPerson = personList.get(row);
-        Person updatedPerson = PersonControllerHelper.formPersonToPerson(updatedFormPerson);
-        tableChanged = true;
-        updatePersonList();
+    public void changePerson(int row, FormPerson changedFormPerson) {
+        Person changedPerson = PersonControllerHelper.formPersonToPerson(changedFormPerson);
+        personList.changePerson(row, changedPerson);
     }
 
     public void deletePerson(int row) {
-        Person person = personList.get(row);
-        updatePersonList();
-        tableChanged = true;
-        personsDeleted = true;
+        personList.deletePerson(row);
     }
 
     public void undo() {
-        updatePersonList();
+        personList.undoLastChange();
     }
 
     public void redo() {
-        updatePersonList();
-    }
-
-    private void updatePersonList() {
-        personList = personListModifier.getPersonList();
+        personList.redoLastChange();
     }
 
     public boolean hasPreviousUpdate() {
-        return true;
+        return personList.hasPreviousChange();
     }
 
     public boolean hasNextUpdate() {
-        return true;
+        return personList.hasNextChange();
     }
 
     public void savePersonsToFile(File file) throws IOException {
@@ -81,15 +66,15 @@ public class PersonController {
     }
 
     public List<FormPerson> loadFromFile(File file) throws IOException, ClassNotFoundException {
-        personList.clear();
         fileSaver.loadPersonsFromFile(file);
-        personList = fileSaver.getResult();
-
+        personList.loadPersons(fileSaver.getResult());
         return getFormPersonList();
     }
 
     public List<FormPerson> getFormPersonList() {
-        return PersonControllerHelper.personListToFormPersonList(personList);
+        List<Person> persons = personList.getUpdatedPersonList();
+        List<FormPerson> formPersons = PersonControllerHelper.personListToFormPersonList(persons);
+        return formPersons;
     }
 
     public void disconnectDatabase() throws SQLException {
@@ -97,10 +82,10 @@ public class PersonController {
     }
 
     public boolean isTableChanged() {
-        return tableChanged;
+        return personList.hasNextChange();
     }
 
     public boolean arePersonsDeleted() {
-        return personsDeleted;
+        return personList.arePersonsDeleted();
     }
 }

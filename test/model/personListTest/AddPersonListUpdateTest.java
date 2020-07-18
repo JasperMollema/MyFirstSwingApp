@@ -4,33 +4,33 @@ import model.AgeCategory;
 import model.Gender;
 import model.MaritalStatus;
 import model.Person;
-import model.personList.AddPerson;
+import model.personList.AddPersonUpdate;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AddPersonTest extends PersonChangeTest {
+public class AddPersonListUpdateTest extends PersonChangeTest {
     private Person addedPerson;
 
     @Test
     void whenAddingPersonThenPersonListShouldNotChange() {
-        AddPerson addPerson = createAddPerson();
-        addPerson.changePersonList(personList);
+        AddPersonUpdate addPersonUpdate = createAddPerson();
+        addPersonUpdate.changePersonList(personList);
         assertTrue(personListIsNotChanged());
     }
 
     @Test
     void whenAddingPersonThenTheReturnedListShouldContainAddedPerson() {
-        AddPerson addPerson = createAddPerson();
-        List<Person> returnedList = addPerson.changePersonList(personList);
+        AddPersonUpdate addPersonUpdate = createAddPerson();
+        List<Person> returnedList = addPersonUpdate.changePersonList(personList);
         assertTrue(returnedList.contains(addedPerson));
     }
 
-    private AddPerson createAddPerson() {
+    private AddPersonUpdate createAddPerson() {
         createAddedPerson();
-        return new AddPerson(addedPerson, INDEX);
+        return new AddPersonUpdate(addedPerson, INDEX);
     }
 
     protected void createAddedPerson() {

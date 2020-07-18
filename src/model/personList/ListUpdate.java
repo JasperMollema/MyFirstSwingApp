@@ -1,5 +1,7 @@
 package model.personList;
 
-public interface ListUpdate {
-    int getIndex();
+import java.util.List;
+
+public interface ListUpdate<T> {
+    List<T> getList();
 }

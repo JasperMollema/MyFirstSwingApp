@@ -4,42 +4,42 @@ import model.AgeCategory;
 import model.Gender;
 import model.MaritalStatus;
 import model.Person;
-import model.personList.UpdatePerson;
+import model.personList.ChangePersonUpdate;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class UpdatePersonTest extends PersonChangeTest {
+public class ChangePersonListUpdateTest extends PersonChangeTest {
     private Person updatedPerson;
     private final String OTHER_NAME = "otherName";
 
     @Test
     void whenUpdatingPersonThenPersonListShouldNotChange() {
-        UpdatePerson updatePerson = createUpdatePerson();
-        updatePerson.changePersonList(personList);
+        ChangePersonUpdate changePersonUpdate = createUpdatePerson();
+        changePersonUpdate.changePersonList(personList);
         assertTrue(personListIsNotChanged());
     }
 
     @Test
     void whenUpdatingPersonNameThenThePersonNameFromReturnedListShouldBeChanged() {
-        UpdatePerson updatePerson = createUpdatePerson();
-        List<Person> returnedList = updatePerson.changePersonList(personList);
+        ChangePersonUpdate changePersonUpdate = createUpdatePerson();
+        List<Person> returnedList = changePersonUpdate.changePersonList(personList);
         updatedPerson = returnedList.get(INDEX);
         assertTrue(nameIsChanged());
     }
 
     @Test
     void whenUpdatingPersonThenSizeReturnedListAndOriginalListShouldBeTheSame() {
-        UpdatePerson updatePerson = createUpdatePerson();
-        List<Person> returnedList = updatePerson.changePersonList(personList);
+        ChangePersonUpdate changePersonUpdate = createUpdatePerson();
+        List<Person> returnedList = changePersonUpdate.changePersonList(personList);
         updatedPerson = returnedList.get(INDEX);
         assertTrue(returnedList.size() == personList.size());
     }
 
-    private UpdatePerson createUpdatePerson() {
-        return new UpdatePerson(person, INDEX, createUpdatedPerson());
+    private ChangePersonUpdate createUpdatePerson() {
+        return new ChangePersonUpdate(INDEX, createUpdatedPerson());
     }
 
     private boolean nameIsChanged() {

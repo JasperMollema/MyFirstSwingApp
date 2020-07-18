@@ -20,7 +20,7 @@ public class PersonTableListenerImpl implements PersonTableListener {
 
     @Override
     public void rowChanged(int row, List<FormPerson> formPersonList) {
-        personController.updatePerson(row, formPersonList.get(row));
+        personController.changePerson(row, formPersonList.get(row));
         toolbar.setVisibilityUndoButton(true);
         toolbar.setVisibilityRedoButton(false);
     }
