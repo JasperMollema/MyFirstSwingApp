@@ -54,11 +54,13 @@ public class ToolbarListenerImpl implements ToolbarListener {
                     JOptionPane.ERROR_MESSAGE);
         }
         tablePanel.refresh();
+        resetToolbar();
     }
 
     @Override
     public void loadEventOccurred() {
         refreshPersonTable();
+        resetToolbar();
     }
 
     @Override
