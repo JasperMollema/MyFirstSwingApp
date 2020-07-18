@@ -52,6 +52,10 @@ public class PersonList {
         personListUpdateNavigator.addTableUpdate(new PersonListUpdate(persons));
     }
 
+    public void clear() {
+        personListUpdateNavigator.removeAllUpdates();
+    }
+
     public List<Person> getUpdatedPersonList() {
         return personListUpdateNavigator.getCurrentUpdate();}
 }

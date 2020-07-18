@@ -47,6 +47,11 @@ public class LisUpdateNavigator<T> {
         return currentUpdateIndex > 0;
     }
 
+    public void removeAllUpdates() {
+        listUpdates.clear();
+        currentUpdateIndex = -1;
+    }
+
     public List<T> getCurrentUpdate() {
         throwExceptionWhenUpdatesIsEmpty();
         return listUpdates.get(currentUpdateIndex).getList();

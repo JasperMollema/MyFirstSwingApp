@@ -25,6 +25,7 @@ public class PersonController {
 
     public boolean loadPersons() throws SQLException {
         personSearchList.findPersons();
+        personList.clear();
         personList.loadPersons(personSearchList.getResult());
         return !personSearchList.getResult().isEmpty();
     }

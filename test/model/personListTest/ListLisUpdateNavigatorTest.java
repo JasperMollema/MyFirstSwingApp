@@ -107,6 +107,19 @@ public class ListLisUpdateNavigatorTest {
         assertFalse(lisUpdateNavigator.hasNextUpdate());
     }
 
+    @Test
+    void whenRemovingUpdatesAndAddingNewUpdatesCurrentUpdateShouldBeThirdUpdate() {
+        lisUpdateNavigator.removeAllUpdates();
+        addAllUpdates();
+        assertTrue(this::currentUpdateIsThirdUpdate);
+    }
+
+    @Test
+    void whenRemovingAllUpdatesGetCurrentUpdateShouldThrowException() {
+        lisUpdateNavigator.removeAllUpdates();
+        assertThrows(NoUpdatesAvailableException.class, () -> lisUpdateNavigator.getCurrentUpdate());
+    }
+
     private void goToFirstUpdate() {
         lisUpdateNavigator.goToPreviousUpdate();
         lisUpdateNavigator.goToPreviousUpdate();
