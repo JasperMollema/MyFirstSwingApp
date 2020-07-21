@@ -1,5 +1,7 @@
 package gui;
 
+import model.MaritalStatus;
+
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
@@ -25,6 +27,7 @@ public class PersonTableModel extends AbstractTableModel {
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         switch (columnIndex) {
             case NAME_COLUMN:
+            case MARITAL_STATUS_COLUMN:
             case CLUB_MEMBER_COLUMN:
                 return true;
             default:
@@ -44,6 +47,9 @@ public class PersonTableModel extends AbstractTableModel {
             case NAME_COLUMN:
                 formPerson.name = aValue.toString();
                 break;
+            case MARITAL_STATUS_COLUMN:
+                formPerson.maritalStatus = (MaritalStatus) aValue;
+                break;
             case CLUB_MEMBER_COLUMN:
                 formPerson.isClubMember = (Boolean) aValue;
                 break;
@@ -55,17 +61,12 @@ public class PersonTableModel extends AbstractTableModel {
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
-            case NAME_COLUMN:
-            case AGE_CATEGORY_COLUMN:
-            case OCCUPATION_COLUMN:
-            case MARITAL_STATUS_COLUMN:
-            case GENDER_COLUMN:
-            case MEMBER_ID_COLUMN:
-                return String.class;
             case CLUB_MEMBER_COLUMN:
                 return Boolean.class;
+            case MARITAL_STATUS_COLUMN:
+                return MaritalStatus.class;
             default:
-                return null;
+                return String.class;
         }
     }
 
@@ -85,7 +86,26 @@ public class PersonTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int column) {
-        return formPersonList.get(row).getValue(column);
+        FormPerson formPerson = formPersonList.get(row);
+
+        switch (column) {
+            case NAME_COLUMN:
+                return  formPerson.name;
+            case AGE_CATEGORY_COLUMN:
+                return formPerson.ageCategory;
+            case OCCUPATION_COLUMN:
+                return formPerson.occupation;
+            case MARITAL_STATUS_COLUMN:
+                return formPerson.maritalStatus;
+            case GENDER_COLUMN:
+                return formPerson.gender;
+            case MEMBER_ID_COLUMN:
+                return formPerson.memberId;
+            case CLUB_MEMBER_COLUMN:
+                return formPerson.isClubMember;
+            default:
+                return null;
+        }
     }
 
     @Override

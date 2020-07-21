@@ -25,7 +25,7 @@ public class ToolbarListenerImpl implements ToolbarListener {
     public void saveEventOccurred() {
         if (!personController.isTableChanged()) {
             JOptionPane.showMessageDialog(
-                    MainFrame.class.cast(MainFrame.getFrames()),
+                    MainFrame.class.cast(MainFrame.getFrames()[0]),
                     "There are no changes to save",
                     "No changes made",
                     JOptionPane.INFORMATION_MESSAGE
@@ -34,7 +34,7 @@ public class ToolbarListenerImpl implements ToolbarListener {
 
         if (personController.arePersonsDeleted()) {
             int action = JOptionPane.showConfirmDialog(
-                    MainFrame.class.cast(MainFrame.getFrames()),
+                    MainFrame.class.cast(MainFrame.getFrames()[0]),
                     "You have deleted a person, are you sure you want to save these changes?",
                     "Persons deleted",
                     JOptionPane.OK_CANCEL_OPTION);
@@ -48,7 +48,7 @@ public class ToolbarListenerImpl implements ToolbarListener {
             personController.savePersons();
         } catch (SQLException exception) {
             JOptionPane.showMessageDialog(
-                    MainFrame.class.cast(MainFrame.getFrames()),
+                    MainFrame.class.cast(MainFrame.getFrames()[0]),
                     "Unable to save to database" ,
                     "Database Connection Problem",
                     JOptionPane.ERROR_MESSAGE);
@@ -92,7 +92,7 @@ public class ToolbarListenerImpl implements ToolbarListener {
         try {
             if (!personController.loadPersons()) {
                 JOptionPane.showMessageDialog(
-                        MainFrame.class.cast(MainFrame.getFrames()),
+                        MainFrame.class.cast(MainFrame.getFrames()[0]),
                         "There are no persons to load",
                         "No persons available",
                         JOptionPane.INFORMATION_MESSAGE
@@ -101,7 +101,7 @@ public class ToolbarListenerImpl implements ToolbarListener {
 
         } catch (SQLException exception) {
             JOptionPane.showMessageDialog(
-                    MainFrame.class.cast(MainFrame.getFrames()),
+                    MainFrame.class.cast(MainFrame.getFrames()[0]),
                     "Unable to load from database" ,
                     "Database Connection Problem",
                     JOptionPane.ERROR_MESSAGE);

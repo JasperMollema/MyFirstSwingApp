@@ -3,7 +3,6 @@ package controller;
 import gui.FormPerson;
 import model.AgeCategory;
 import model.Gender;
-import model.MaritalStatus;
 import model.Person;
 
 import java.util.ArrayList;
@@ -19,11 +18,28 @@ public class PersonControllerHelper {
                 formPerson.name,
                 formPerson.occupation,
                 determineAgeCategory(formPerson),
-                determineMaritalStatus(formPerson),
+                formPerson.maritalStatus,
                 formPerson.isClubMember,
                 formPerson.memberId,
                 determineGender(formPerson)
         );
+    }
+
+    private static AgeCategory determineAgeCategory(FormPerson formPerson) {
+        switch (formPerson.ageCategory) {
+            case "child": return AgeCategory.CHILD;
+            case "adult": return AgeCategory.ADULT;
+            case "senior": return AgeCategory.SENIOR;
+            default:return null;
+        }
+    }
+
+    private static Gender determineGender(FormPerson formPerson) {
+        switch (formPerson.gender) {
+            case "male" : return Gender.MALE;
+            case "female" : return Gender.FEMALE;
+            default: return null;
+        }
     }
 
     public static List<Person> formPersonListToPersonList(List<FormPerson> formPersonList) {
@@ -46,7 +62,7 @@ public class PersonControllerHelper {
         formPerson.name = person.getName();
         formPerson.occupation = person.getOccupation();
         formPerson.ageCategory = fillAgeCategory(person.getAgeCategory());
-        formPerson.maritalStatus = fillMaritalStatus(person.getMaritalStatus());
+        formPerson.maritalStatus = person.getMaritalStatus();
         formPerson.isClubMember = person.getIsClubMember();
         formPerson.memberId = person.getMemberID();
         formPerson.gender = fillGender(person.getGender());
@@ -68,17 +84,6 @@ public class PersonControllerHelper {
         return formPersonList;
     }
 
-    private static String fillMaritalStatus(MaritalStatus maritalStatus) {
-        switch (maritalStatus) {
-            case SINGLE : return "single";
-            case COHABITING: return  "cohabiting";
-            case MARRIED: return "married";
-            case DIVORCED: return "divorced";
-            case WIDOWED: return "widowed";
-            default: return "";
-        }
-    }
-
     private static String fillGender(Gender gender) {
         switch (gender) {
             case MALE : return "male";
@@ -92,34 +97,6 @@ public class PersonControllerHelper {
             case CHILD : return CHILD_VALUE;
             case ADULT: return ADULT_VALUE;
             case SENIOR: return SENIOR_VALUE;
-            default: return null;
-        }
-    }
-
-    private static AgeCategory determineAgeCategory(FormPerson formPerson) {
-        switch (formPerson.ageCategory) {
-            case "child": return AgeCategory.CHILD;
-            case "adult": return AgeCategory.ADULT;
-            case "senior": return AgeCategory.SENIOR;
-            default:return null;
-        }
-    }
-
-    private static MaritalStatus determineMaritalStatus(FormPerson formPerson) {
-        switch (formPerson.maritalStatus) {
-            case "single": return MaritalStatus.SINGLE;
-            case "married": return MaritalStatus.MARRIED;
-            case "cohabiting": return MaritalStatus.COHABITING;
-            case "divorced": return MaritalStatus.DIVORCED;
-            case "widowed": return MaritalStatus.WIDOWED;
-            default: return null;
-        }
-    }
-
-    private static Gender determineGender(FormPerson formPerson) {
-        switch (formPerson.gender) {
-            case "male" : return Gender.MALE;
-            case "female" : return Gender.FEMALE;
             default: return null;
         }
     }

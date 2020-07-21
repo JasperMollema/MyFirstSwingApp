@@ -1,18 +1,20 @@
 package gui;
 
+import model.MaritalStatus;
+
 import java.util.EventObject;
 
 public class FormEvent extends EventObject {
     private String name;
     private String occupation;
     private String ageCategory;
-    private String maritalStatus;
+    private MaritalStatus maritalStatus;
     private Boolean isClubMember;
     private String memberID;
     private String gender;
 
     public FormEvent(FormPanel formPanel, String name, String occupation, String ageCategory,
-                     String maritalStatus, boolean isClubMember, String memberID, String gender) {
+                     MaritalStatus maritalStatus, boolean isClubMember, String memberID, String gender) {
         super(formPanel);
         this.name = name;
         this.occupation = occupation;
@@ -35,7 +37,7 @@ public class FormEvent extends EventObject {
         return ageCategory;
     }
 
-    public String getMaritalStatus() {
+    public MaritalStatus getMaritalStatus() {
         return maritalStatus;
     }
 

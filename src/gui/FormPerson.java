@@ -1,12 +1,14 @@
 package gui;
 
+import model.MaritalStatus;
+
 public class FormPerson {
     public static final int COLUMN_COUNT = 7;
 
     public String name;
     public String occupation;
     public String ageCategory;
-    public String maritalStatus;
+    public MaritalStatus maritalStatus;
     public String gender;
     public Boolean isClubMember;
     public String memberId;

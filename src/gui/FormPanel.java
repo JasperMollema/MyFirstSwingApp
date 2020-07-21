@@ -1,6 +1,7 @@
 package gui;
 
 import gui.listeners.FormListener;
+import model.MaritalStatus;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -47,11 +48,11 @@ public class FormPanel extends JPanel {
         maritalStatusBox = new JComboBox<String>();
 
         DefaultComboBoxModel maritalStatusModel = new DefaultComboBoxModel();
-        maritalStatusModel.addElement("single");
-        maritalStatusModel.addElement("married");
-        maritalStatusModel.addElement("cohabiting");
-        maritalStatusModel.addElement("divorced");
-        maritalStatusModel.addElement("widowed");
+        maritalStatusModel.addElement(MaritalStatus.SINGLE);
+        maritalStatusModel.addElement(MaritalStatus.COHABITING);
+        maritalStatusModel.addElement(MaritalStatus.MARRIED);
+        maritalStatusModel.addElement(MaritalStatus.DIVORCED);
+        maritalStatusModel.addElement(MaritalStatus.WIDOWED);
 
         maritalStatusBox.setModel(maritalStatusModel);
         maritalStatusBox.setSelectedIndex(0);
@@ -94,7 +95,7 @@ public class FormPanel extends JPanel {
                                         nameField.getText(),
                                         occupationField.getText(),
                                         ageList.getSelectedValue().toString(),
-                                        (String) maritalStatusBox.getSelectedItem(),
+                                        (MaritalStatus) maritalStatusBox.getSelectedItem(),
                                         clubMemberCheck.isSelected(),
                                         memberIdField.getText(),
                                         genderRadioButtonGroup.getSelection().getActionCommand()

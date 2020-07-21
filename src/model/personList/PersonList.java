@@ -5,10 +5,10 @@ import model.Person;
 import java.util.List;
 
 public class PersonList {
-    private LisUpdateNavigator<Person> personListUpdateNavigator;
+    private ListUpdateNavigator<Person> personListUpdateNavigator;
 
     public PersonList() {
-        personListUpdateNavigator = new LisUpdateNavigator();
+        personListUpdateNavigator = new ListUpdateNavigator();
     }
 
     public void addPerson(Person person) {

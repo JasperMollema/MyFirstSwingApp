@@ -3,11 +3,11 @@ package model.personList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LisUpdateNavigator<T> {
+public class ListUpdateNavigator<T> {
     private List<ListUpdate<T>> listUpdates;
     private int currentUpdateIndex;
 
-    public LisUpdateNavigator() {
+    public ListUpdateNavigator() {
         listUpdates = new ArrayList<>();
         currentUpdateIndex = -1;
     }

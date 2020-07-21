@@ -1,6 +1,7 @@
 package gui;
 
 import gui.listeners.PersonTableListener;
+import model.MaritalStatus;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +27,10 @@ public class TablePanel extends JPanel {
 
         table = new JTable(tableModel);
         popupMenu = new JPopupMenu();
+        JComboBox maritalStatusComboBox = new MaritalStatusComboBox().getComboBox();
+        table.setDefaultRenderer(MaritalStatus.class, new MaritalStatusRenderer(maritalStatusComboBox));
+        table.setDefaultEditor(MaritalStatus.class, new MaritalStatusEditor(maritalStatusComboBox));
+        table.setRowHeight(25);
 
         JMenuItem removeItem = new JMenuItem("Delete row");
         popupMenu.add(removeItem);
