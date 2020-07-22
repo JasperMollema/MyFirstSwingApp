@@ -10,4 +10,6 @@ public interface ToolbarListener {
     void undoEventOccurred();
 
     void redoEventOccurred();
+
+    void gameEventOccurred();
 }

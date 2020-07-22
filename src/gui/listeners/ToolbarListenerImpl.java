@@ -5,6 +5,7 @@ import gui.MainFrame;
 import gui.MessagePanel;
 import gui.TablePanel;
 import gui.Toolbar;
+import gui.game.Game;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -109,5 +110,10 @@ public class ToolbarListenerImpl implements ToolbarListener {
 
         tablePanel.fillTable(personController.getFormPersonList());
         tablePanel.refresh();
+    }
+
+    @Override
+    public void gameEventOccurred() {
+        Game game = new Game();
     }
 }

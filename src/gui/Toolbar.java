@@ -15,6 +15,7 @@ public class Toolbar extends JToolBar implements ActionListener {
     private JButton retrieveMessageButton;
     private JButton previousButton;
     private JButton nextButton;
+    private JButton gameButton;
 
     private ToolbarListener toolbarListener;
 
@@ -44,11 +45,16 @@ public class Toolbar extends JToolBar implements ActionListener {
         nextButton.setIcon(createIcon("/images/Redo24.gif"));
         nextButton.setVisible(false);
 
+        gameButton = new JButton("Play Game");
+        gameButton.setToolTipText("Play an awesome game");
+        gameButton.setVisible(true);
+
         saveButton.addActionListener(this);
         loadButton.addActionListener(this);
         retrieveMessageButton.addActionListener(this);
         previousButton.addActionListener(this);
         nextButton.addActionListener(this);
+        gameButton.addActionListener(this);
 
         setLayout(new FlowLayout(FlowLayout.LEFT));
 
@@ -57,6 +63,7 @@ public class Toolbar extends JToolBar implements ActionListener {
         add(retrieveMessageButton);
         add(previousButton);
         add(nextButton);
+        add(gameButton);
     }
 
     public void setToolbarListener(ToolbarListener toolbarListener) {
@@ -89,6 +96,10 @@ public class Toolbar extends JToolBar implements ActionListener {
 
         if (clicked == nextButton) {
             toolbarListener.redoEventOccurred();
+        }
+
+        if (clicked == gameButton) {
+            toolbarListener.gameEventOccurred();
         }
     }
 
