@@ -5,7 +5,7 @@ import gui.MainFrame;
 import gui.MessagePanel;
 import gui.TablePanel;
 import gui.Toolbar;
-import gui.game.Game;
+import gui.game.GameFrame;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -114,6 +114,6 @@ public class ToolbarListenerImpl implements ToolbarListener {
 
     @Override
     public void gameEventOccurred() {
-        Game game = new Game();
+        GameFrame gameFrame = new GameFrame();
     }
 }
